@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- APP Widget에 관련된 meta data들을 기술 -->
+<!-- minWidth(최소넓이) / minHeight(최소높이) / updatePeriodMillis(AppWidgetProvider의 onUpdate()메서드 호출 주기 설정) / 
+initalLayout(초기 레이아웃 설정) / configure(Activity 호출) -->
+
+
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:minWidth="294dp"
+    android:minHeight="146dp"
+    android:initialLayout="@layout/activity_widget"
+  	 android:previewImage="@drawable/cpr_icon"
+    />
