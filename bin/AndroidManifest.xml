@@ -16,7 +16,7 @@
  
         
         <activity
-            android:name="org.shinyul.cpr_widget.MainActivity"
+            android:name="org.shinyul.login.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
 		</receiver>		
 		       
         <!-- widget 리시버 -->
-        <receiver android:name=".WidgetProvider">
+        <receiver android:name="org.shinyul.widget.WidgetProvider">
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_configuration"/>
             <intent-filter >
@@ -48,11 +48,11 @@
         </receiver>
 		
 		<!-- GCM 리시버에서 돌리는 서비스 -->
-		<service android:name=".GCMIntentService" /><!-- 서비스명 변경하면 안됨 -->
+		<service android:name="org.shinyul.gcm.GCMIntentService" /><!-- 서비스명 변경하면 안됨 -->
         
         <!-- widget 서비스 -->
          <service
-            android:name=".WidgetService"
+            android:name="org.shinyul.widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         
     </application>
