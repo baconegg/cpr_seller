@@ -1,11 +1,17 @@
 package org.shinyul.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.shinyul.util.CommonUtils;
+import org.shinyul.util.Constants;
+
+import android.content.Context;
+import android.util.Log;
 
 public class WidgetUtil extends CommonUtils {
 
@@ -15,13 +21,31 @@ public class WidgetUtil extends CommonUtils {
 		return util;
 	}
 
-	// ////////////////////////////////////////////////////////////////////////
-	public List<ReserveVO> getList(String reserveList) {
-		// //////////////////////////////////////parsing part////////////////////////////////////
+	/**
+	 * 1. reserveList를 받기위해
+	 * 
+	 * @param page
+	 * @param selIdx
+	 *            보냄. 2. resrveList 받아옴.
+	 */
+	public String receiveList(Context context, Integer page, Integer selIdx, String path) {
+		Log.i(Constants.TAG, "reserveList in");
+
+		HashMap<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("page", String.valueOf(page));
+		paramMap.put("selIdx", String.valueOf(selIdx));
+
+		Log.i(Constants.TAG, "enter the onReceive before");
+
+		return post(path, paramMap, "onReceiveData");
+	}
+	
+	/////////////////////////////////////////////////////////////////////
+	//파싱
+	public List<ReserveVO> getReserveData(String rcvData) {
 		List<ReserveVO> list = new ArrayList<ReserveVO>();
-		JSONArray jsonArray = null;
 		try {
-			jsonArray = new JSONArray(reserveList);
+			JSONArray jsonArray = util.exchangeData(rcvData);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject obj = jsonArray.getJSONObject(i);
 				// Log.i(Constants.TAG, obj.getString("reserveIdx"));
@@ -35,7 +59,7 @@ public class WidgetUtil extends CommonUtils {
 		return list;
 	}
 
-	///////////////////////////////
+	/////////////////////////////////////////////////////////////////////
 	//vo setting
 	public ReserveVO voInit(JSONObject obj) {
 		ReserveVO vo = new ReserveVO();

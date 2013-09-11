@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package org.shinyul.cpr_widget;
+package org.shinyul.cpr_seller;
 
 public final class Manifest {
     public static final class permission {

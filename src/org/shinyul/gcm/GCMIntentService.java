@@ -1,8 +1,10 @@
 package org.shinyul.gcm;
 
-import org.shinyul.cpr_widget.R;
+import org.shinyul.cpr_seller.R;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
+import org.shinyul.util.SendMessageHandler;
+import org.shinyul.widget.WidgetThread;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
@@ -75,14 +78,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		noticeManager.notify(0, notice);
 		
-		((GCMUtil)util).processThread(context);
+		processThread(context);
 		
 	}
 
 	@Override
 	protected void onRegistered(Context context, String regId) {
 		util = GCMUtil.getGCMUtil();
-		((GCMUtil) util).regId(getApplicationContext(), regId, "gcm/addRegId");
+		((GCMUtil)util).regId(getApplicationContext(), regId, "gcm/addRegId");
 	}
 
 	@Override
@@ -100,4 +103,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 	}
 	
+	// //////////////////////////////////////////////////////////////////////////
+	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
+	public void processThread(Context context) {
+		new WidgetThread(context, new SendMessageHandler(), 1, 3).start();
+	}
 }

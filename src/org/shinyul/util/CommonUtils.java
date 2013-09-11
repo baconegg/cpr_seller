@@ -10,7 +10,12 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.json.JSONArray;
 import org.json.JSONException;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class CommonUtils{
@@ -38,7 +43,7 @@ public class CommonUtils{
 	    String params = makeParams(paramMap);
 	       
 	    HttpURLConnection conn = null;
-	   String reserveList = null;
+	    String rcvData = null;
 		try {
 			
 			//connection 얻기
@@ -53,8 +58,8 @@ public class CommonUtils{
 				throw new IOException("Post failed with error code " + states);
 			}else{
 				//성공시 값 받기
-				if(cmd.equals("onReceiveList")){
-					reserveList = onReceiveList(conn);
+				if(cmd.equals("onReceiveData")){
+					rcvData = onReceiveData(conn);
 				}
 			}
 		} catch (IOException e) {
@@ -65,7 +70,7 @@ public class CommonUtils{
 			if(conn != null) conn.disconnect();
 		}
 		
-		return reserveList;
+		return rcvData;
   }
   
 /**
@@ -117,7 +122,7 @@ public class CommonUtils{
   	 * @throws IOException 
   	 * @throws JSONException 
   	 */
-  	public String onReceiveList(HttpURLConnection conn) throws IOException, JSONException{
+  	protected String onReceiveData(HttpURLConnection conn) throws IOException, JSONException{
   	
   		Log.i(Constants.TAG, "states : 200");
 			
@@ -128,9 +133,42 @@ public class CommonUtils{
 		while((temp = reader.readLine()) != null){
 			sb.append(temp); 
 		}
-		String reserveList = sb.toString();
-//		Log.i(Constants.TAG, reserveList);
+		String receiveData = sb.toString();
 	
-		return reserveList;
+		return receiveData;
   	}
+  	
+  	/////////////////////////////////////////////////////////////////////
+ 	// JSONArray 객체로
+ 	protected JSONArray exchangeData(String rcvData) {
+ 		return new JSONArray(rcvData);
+ 	}
+ 	
+ 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	//sharedPreferences
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 값 불러오기
+	protected int getPreferences(Context context) {
+		SharedPreferences pref = context.getSharedPreferences("cpr", context.MODE_PRIVATE);
+		// int chk = pref.getInt("chk", 0);
+		// int selIdx = pref.getInt("selIdx", 0);
+		// String memberId = pref.getString("memberId", "");
+		// String memberName = pref.getString("memberName", "");
+		int memberIdx = pref.getInt("memberIdx", 0);
+		// int memberLev = pref.getInt("memberLev", 0);
+		return memberIdx;
+	}
+
+	// 값(Key Data) 삭제하기
+	protected void removePreferences(Context context) {
+		SharedPreferences pref = context.getSharedPreferences("cpr", context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = pref.edit();
+		editor.remove("chk");
+		editor.remove("selIdx");
+		editor.remove("memberId");
+		editor.remove("memberName");
+		editor.remove("memberIdx");
+		editor.remove("memberLev");
+		editor.commit();
+	}
 }

@@ -2,12 +2,16 @@ package org.shinyul.gcm;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gcm.GCMRegistrar;
 
 public class GCMUtil extends CommonUtils {
@@ -118,46 +122,14 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void regId(Context context, String regId, String path) {
 		String phoneNumber = getPhoneNumber(context);
-
 		HashMap<String, String> paramMap = new HashMap<String, String>();
-
+		removePreferences(context);
+		
 		paramMap.put("regId", regId);
+		paramMap.put("memberIdx", String.valueOf(getPreferences(context)));
 		paramMap.put("phoneNumber", phoneNumber);
 
-		Log.i("GCM", "regId : " + regId);
-		Log.i("GCM", "phoneNumber : " + phoneNumber);
-
 		post(path, paramMap, "");
-
 	}
-
-	/**
-	 * 1. reserveList를 받기위해
-	 * 
-	 * @param page
-	 * @param selIdx
-	 *            보냄. 2. resrveList 받아옴.
-	 */
-	public String receiveList(Context context, Integer page, Integer selIdx,
-			String path) {
-		Log.i(Constants.TAG, "reserveList in");
-
-		HashMap<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("page", String.valueOf(page));
-		paramMap.put("selIdx", String.valueOf(selIdx));
-
-		Log.i(Constants.TAG, "enter the onReceive before");
-
-		return post(path, paramMap, "onReceiveList");
-	}
-
-	// //////////////////////////////////////////////////////////////////////////
-	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
-	public void processThread(Context context) {
-		PrivateThread thread = new PrivateThread();
-//		SendMessageHandler handler = new SendMessageHandler();
-//		thread.setHandler(handler);
-		thread.context = context;
-		thread.start();
-	}
+	
 }

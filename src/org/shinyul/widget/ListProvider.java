@@ -2,7 +2,7 @@ package org.shinyul.widget;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.shinyul.cpr_widget.R;
+import org.shinyul.cpr_seller.R;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import android.appwidget.AppWidgetManager;
@@ -61,7 +61,7 @@ public class ListProvider implements RemoteViewsFactory {
 	private void populateListItem() {
 		
 		util = WidgetUtil.getWidgetUtil();
-		List<ReserveVO> list =  ((WidgetUtil) util).getList(reserveList); 
+		List<ReserveVO> list =  ((WidgetUtil) util).getReserveData(reserveList); 
 		
 		Log.i(Constants.TAG, "msg list : " +  list);
 		
@@ -69,9 +69,9 @@ public class ListProvider implements RemoteViewsFactory {
 			for (int i = 0; i < list.size() ; i++) {
 				ListItem listItem = new ListItem();
 				listItem.heading = list.get(i).getProductName();
-				listItem.content = list.get(i).getProductInfo();
+//				listItem.content = list.get(i).getProductInfo();
+				listItem.content = list.get(i).getReserveMemo();
 				listItemList.add(listItem);
-				
 			}
 		}else{
 			ListItem listItem = new ListItem();
