@@ -106,6 +106,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 	// //////////////////////////////////////////////////////////////////////////
 	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
 	public void processThread(Context context) {
-		new WidgetThread(context, new SendMessageHandler(), 1, 3).start();
+		WidgetThread thread = new WidgetThread(context, new SendMessageHandler(), 1, 3);
+		thread.setDaemon(true);
+		thread.start();
 	}
 }

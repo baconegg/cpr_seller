@@ -6,6 +6,7 @@ import org.shinyul.util.SendMessageHandler;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 public class LogInThread extends Thread implements Runnable {
@@ -62,9 +63,8 @@ public class LogInThread extends Thread implements Runnable {
 			e.printStackTrace();
 		}
 
-		 msg = handler.obtainMessage();
-		 msg.what = Constants.SEND_THREAD_STOP_MESSAGE;
-		 handler.sendMessage(msg);
-
+//		 msg = handler.obtainMessage();
+//		 msg.what = Constants.SEND_THREAD_STOP_MESSAGE;
+//		 handler.sendMessage(msg);
 	}
 }
