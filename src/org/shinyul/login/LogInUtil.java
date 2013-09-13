@@ -1,18 +1,20 @@
 package org.shinyul.login;
 
-import java.lang.reflect.GenericArrayType;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shinyul.gcm.GCMUtil;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
-import org.shinyul.widget.ReserveVO;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 public class LogInUtil extends CommonUtils {
 
@@ -41,23 +43,22 @@ public class LogInUtil extends CommonUtils {
 		Map<String, String> data = new HashMap<String, String>();
 		JSONArray jsonArray = exchangeData(rcvData);
 		
-		int idx = 0;
-		data.put("selIdx", jsonArray.getString(idx++));
-		data.put("memberId", jsonArray.getString(idx++));
-		data.put("memberIdx", jsonArray.getString(idx++));
-		data.put("memberName", jsonArray.getString(idx++));
-		data.put("chk", jsonArray.getString(idx++));
-		data.put("memberLev", jsonArray.getString(idx++));
+		JSONObject tmp = jsonArray.getJSONObject(0);
+		
+		Iterator<String> keys = tmp.keys();
+		while(keys.hasNext()){
+			String key = keys.next();
+			data.put(key, tmp.getString(key));
+		}
 			
 		return data;
 	}
 	
 	// /////////////////////////////////////////////////////////////////////////////////////////////
 	// 값 저장하기
-	public void savePreferences(Context context, Map<String, String> data, String rcvData) {
-
+	public Map<String, String> savePreferences(Context context, String rcvData) {
 		util = LogInUtil.getLogInUtil();
-		data = ((LogInUtil) util).getLogInData(rcvData);
+		Map<String, String> data = ((LogInUtil) util).getLogInData(rcvData);
 
 		SharedPreferences pref = context.getSharedPreferences("cpr", context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
@@ -68,5 +69,9 @@ public class LogInUtil extends CommonUtils {
 		editor.putInt("memberIdx", Integer.valueOf(data.get("memberIdx")).intValue());
 		editor.putInt("memberLev", Integer.valueOf(data.get("memberLev")).intValue());
 		editor.commit();
+		
+		return data;
 	}
+
+
 }

@@ -1,14 +1,20 @@
 package org.shinyul.login;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.shinyul.cpr_seller.R;
 import org.shinyul.gcm.GCMUtil;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import org.shinyul.util.SendMessageHandler;
+
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +27,7 @@ public class MainActivity extends Activity {
 
 	private Context appContext = null;
 	private CommonUtils util;
-	private Map<String, String> data;
-	
+	private String logInData;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +45,8 @@ public class MainActivity extends Activity {
 	// }
 
 	private void initialize() {
-		this.appContext = getApplicationContext(); 
-//		this.appContext = this; 
+//		this.appContext = getApplicationContext(); 
+		this.appContext = this; 
 		logInBtn();
 	}
 
@@ -65,25 +70,62 @@ public class MainActivity extends Activity {
 				String memberId = ID.getText().toString();
 				String memberPw = PW.getText().toString();
 				
-				new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw).start();
+				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
+//				LogInThread thread = new LogInThread(appContext, handler, memberId, memberPw);
+				thread.setDaemon(true);
+				thread.start();
 			}
 		});
 	}
 	
-	public void toGCM(String rcvData){
-			
-		util = LogInUtil.getLogInUtil();
-		((LogInUtil)util).savePreferences(appContext, data, rcvData);
-		
-		if(data.containsKey("0")){
-			//login성공
-			util = GCMUtil.getGCMUtil();
-			((GCMUtil)util).startGCM(appContext);
-		}else{
-			//실패
-			Toast.makeText(appContext, "ID/PW가 틀립니다.", Toast.LENGTH_LONG).show();
-		}
-										
-		// 상점 리스트 액티비티 부르자...
+	
+	
+	/////////////////////////////////////////////////////////////////////////
+	//데이터 업데이트
+	public void updateData(String rcvData){
+		this.logInData = rcvData;
 	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//사용
+	public void toGCM(Context context) {
+
+		util = LogInUtil.getLogInUtil();
+		Map<String, String> data = ((LogInUtil) util).savePreferences(context, logInData);
+		//////////////////
+		if("0".equals(data.get("chk"))){
+			// login성공
+			CommonUtils	utils = GCMUtil.getGCMUtil();
+			((GCMUtil)utils).startGCM(context);
+			
+//			Intent intent = new Intent();
+//			intent.setClass(appContext, ListActivity.class);
+//			startActivity(intent);
+			
+			
+			Toast.makeText(context, "ID/PW맞어.. 화면 넘기자...", Toast.LENGTH_LONG).show();
+			
+		} else {
+			// 실패
+			Toast.makeText(context, "ID/PW가 틀립니다.", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	
+//	 Handler handler = new Handler() {
+//
+//	    	@Override
+//
+//	    	public void handleMessage(Message msg) {
+//
+//	    		if(msg.what == Constants.SEND_THREAD_INFOMATION_LOGIN) {
+//
+//	    			String rcvData = msg.obj.toString();
+//	    			updateData(rcvData);
+//	    		}
+//
+//	    	}
+//
+//    };
+
 }

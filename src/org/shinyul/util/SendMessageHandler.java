@@ -2,16 +2,19 @@ package org.shinyul.util;
 
 import java.util.Map;
 
+import org.shinyul.gcm.GCMUtil;
 import org.shinyul.login.LogInUtil;
 import org.shinyul.login.MainActivity;
 import org.shinyul.widget.WidgetProvider;
+
+import android.app.Application;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SendMessageHandler extends Handler {
 
@@ -52,9 +55,8 @@ public class SendMessageHandler extends Handler {
 			
 			rcvData = msg.obj.toString();
 			
-			MainActivity main = new MainActivity();
-			main.toGCM(rcvData);
-//			((MainActivity)MainActivity.appContext).toGCM(rcvData);			
+			((MainActivity)context).updateData(rcvData);
+			((MainActivity)context).toGCM(context);
 			break;
 
 		default:
