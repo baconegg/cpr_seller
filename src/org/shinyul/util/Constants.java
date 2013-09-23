@@ -3,7 +3,7 @@ package org.shinyul.util;
 public class Constants {
 	
 	public static final String PROJECT_ID = "993491838738";
-	public static final String SERVERURL = "http://192.168.0.19:8080/cpr/";
+	public static final String SERVERURL = "http://192.168.0.11:8080/cpr/";
 	
 	public static final String TAG = "GCM";
 	
