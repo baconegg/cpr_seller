@@ -48,7 +48,7 @@ public class WidgetThread extends Thread implements Runnable {
 		 * String hi = new String("Count Thared 가 동작하고 있습니다."); msg.obj = hi;
 		 */
 		util = WidgetUtil.getWidgetUtil();
-		String reserveList = ((WidgetUtil)util).receiveList(context, page, selIdx, "widget/list");
+		String reserveList = ((WidgetUtil)util).receiveList(context, page, selIdx, Constants.URL_WIDGET_LIST);
 		
 		msg.obj = reserveList;
 		handler.sendMessage(msg);

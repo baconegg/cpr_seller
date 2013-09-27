@@ -26,22 +26,6 @@ public class ListProvider implements RemoteViewsFactory {
 	private int appWidgetId;
 	private String reserveList;
 	
-	protected static String[] head={
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕"		
-	};
-
-	protected static String[] content={
-		 "주문자 : uuid813",
-		 "주문자 : scott",
-		 "주문자 : akb",
-		 "주문자 : otaku48",
-		 "주문자 : teagu9"
-	};
-	
 	public ListProvider(Context context, Intent intent) {
 		this.context = context;
 //		appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,

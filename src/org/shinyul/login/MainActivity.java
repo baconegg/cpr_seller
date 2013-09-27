@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.shinyul.cpr_seller.R;
 import org.shinyul.gcm.GCMUtil;
+import org.shinyul.menu.MenuActivity;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import org.shinyul.util.SendMessageHandler;
@@ -71,14 +72,11 @@ public class MainActivity extends Activity {
 				String memberPw = PW.getText().toString();
 				
 				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
-//				LogInThread thread = new LogInThread(appContext, handler, memberId, memberPw);
 				thread.setDaemon(true);
 				thread.start();
 			}
 		});
 	}
-	
-	
 	
 	/////////////////////////////////////////////////////////////////////////
 	//데이터 업데이트
@@ -98,34 +96,14 @@ public class MainActivity extends Activity {
 			CommonUtils	utils = GCMUtil.getGCMUtil();
 			((GCMUtil)utils).startGCM(context);
 			
-//			Intent intent = new Intent();
-//			intent.setClass(appContext, ListActivity.class);
-//			startActivity(intent);
-			
-			
-			Toast.makeText(context, "ID/PW맞어.. 화면 넘기자...", Toast.LENGTH_LONG).show();
+			Bundle extras = ((LogInUtil)util).saveBundle(logInData);
+			Intent intent = new Intent(appContext, MenuActivity.class);
+			intent.putExtras(extras);
+			startActivity(intent);
 			
 		} else {
 			// 실패
 			Toast.makeText(context, "ID/PW가 틀립니다.", Toast.LENGTH_LONG).show();
 		}
 	}
-	
-	
-//	 Handler handler = new Handler() {
-//
-//	    	@Override
-//
-//	    	public void handleMessage(Message msg) {
-//
-//	    		if(msg.what == Constants.SEND_THREAD_INFOMATION_LOGIN) {
-//
-//	    			String rcvData = msg.obj.toString();
-//	    			updateData(rcvData);
-//	    		}
-//
-//	    	}
-//
-//    };
-
 }

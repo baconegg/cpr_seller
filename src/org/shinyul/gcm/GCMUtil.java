@@ -77,11 +77,12 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void unregister(Context context, String regId) {
 
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("regId", regId);
-		post("url넣어주셈", params, "");
+//		String regIds[] = Constants.REGID;
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put(regIds[0], regId);
+//		post("url넣어주셈", params, "");
+		
 		GCMRegistrar.setRegisteredOnServer(context, false);
-
 	}
 
 	/**
@@ -96,8 +97,7 @@ public class GCMUtil extends CommonUtils {
 
 	public String getPhoneNumber(Context paramContext) {
 
-		return ((TelephonyManager) paramContext.getSystemService("phone"))
-				.getLine1Number();
+		return ((TelephonyManager) paramContext.getSystemService("phone")).getLine1Number();
 	}
 
 	public boolean isEmpty(String value) {
@@ -125,9 +125,12 @@ public class GCMUtil extends CommonUtils {
 		HashMap<String, String> paramMap = new HashMap<String, String>();
 		removePreferences(context);
 		
-		paramMap.put("regId", regId);
-		paramMap.put("memberIdx", String.valueOf(getPreferences(context)));
-		paramMap.put("phoneNumber", phoneNumber);
+		String regIds[] = Constants.REGID;
+		int i = 0;
+		
+		paramMap.put(regIds[i++], regId);
+		paramMap.put(regIds[i++], String.valueOf(getPreferences(context)));
+		paramMap.put(regIds[i++], phoneNumber);
 
 		post(path, paramMap, "");
 	}

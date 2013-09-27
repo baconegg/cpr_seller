@@ -58,7 +58,7 @@ public class CommonUtils{
 				throw new IOException("Post failed with error code " + states);
 			}else{
 				//성공시 값 받기
-				if(cmd.equals("onReceiveData")){
+				if(cmd.equals(Constants.RECEIVE)){
 					rcvData = onReceiveData(conn);
 				}
 			}
@@ -149,26 +149,35 @@ public class CommonUtils{
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 값 불러오기
 	protected int getPreferences(Context context) {
-		SharedPreferences pref = context.getSharedPreferences("cpr", context.MODE_PRIVATE);
-		// int chk = pref.getInt("chk", 0);
-		// int selIdx = pref.getInt("selIdx", 0);
-		// String memberId = pref.getString("memberId", "");
-		// String memberName = pref.getString("memberName", "");
-		int memberIdx = pref.getInt("memberIdx", 0);
-		// int memberLev = pref.getInt("memberLev", 0);
+		
+		String logIn[] = Constants.LOGINDATA;
+		int i = 0;
+		
+		SharedPreferences pref = context.getSharedPreferences(logIn[i++], context.MODE_PRIVATE);
+		int chk = pref.getInt(logIn[i++], 0);
+		int selIdx = pref.getInt(logIn[i++], 0);
+		String memberId = pref.getString(logIn[i++], "");
+		String memberName = pref.getString(logIn[i++], "");
+		int memberIdx = pref.getInt(logIn[i++], 0);
+		int memberLev = pref.getInt(logIn[i++], 0);
+		
 		return memberIdx;
 	}
 
 	// 값(Key Data) 삭제하기
 	protected void removePreferences(Context context) {
-		SharedPreferences pref = context.getSharedPreferences("cpr", context.MODE_PRIVATE);
+		
+		String logIn[] = Constants.LOGINDATA;
+		int i = 0;
+		
+		SharedPreferences pref = context.getSharedPreferences(logIn[i++], context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
-		editor.remove("chk");
-		editor.remove("selIdx");
-		editor.remove("memberId");
-		editor.remove("memberName");
-		editor.remove("memberIdx");
-		editor.remove("memberLev");
+		editor.remove(logIn[i++]);
+		editor.remove(logIn[i++]);
+		editor.remove(logIn[i++]);
+		editor.remove(logIn[i++]);
+		editor.remove(logIn[i++]);
+		editor.remove(logIn[i++]);
 		editor.commit();
 	}
 }

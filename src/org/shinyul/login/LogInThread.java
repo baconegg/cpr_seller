@@ -49,9 +49,9 @@ public class LogInThread extends Thread implements Runnable {
 		/*
 		 * String hi = new String("Count Thared 가 동작하고 있습니다."); msg.obj = hi;
 		 */
-
+		
 		util = LogInUtil.getLogInUtil();
-		String LogInData = ((LogInUtil)util).logInChk(context, "logIn/", memberId, memberPw);
+		String LogInData = ((LogInUtil)util).logInChk(context, Constants.URL_LOGIN, memberId, memberPw);
 		
 		msg.obj = LogInData;
 		handler.sendMessage(msg);

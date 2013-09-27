@@ -31,16 +31,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onMessage(Context context, Intent paramIntent) {
 		
 		Log.i("GCM", "오냐안오녀?");
+		String gcmMms[] = Constants.GCMMMS;
+		int i = 0;
 		
-		String protocol = paramIntent.getStringExtra("protocol");
-		String content = paramIntent.getExtras().getString("content");
-		String memberName = paramIntent.getExtras().getString("memberName");
-		String productName = paramIntent.getExtras().getString("productName");
-		String reserveQty = paramIntent.getExtras().getString("reserveQty");
-		String reserveReceiveTime = paramIntent.getExtras().getString("reserveReceiveTime");
-		String reserveMemo = paramIntent.getExtras().getString("reserveMemo");
-		String totalPrice = paramIntent.getExtras().getString("totalPrice");
-		String productInfo = paramIntent.getExtras().getString("productInfo");
+		String protocol = paramIntent.getStringExtra(gcmMms[i++]);
+		String content = paramIntent.getExtras().getString(gcmMms[i++]);
+		String memberName = paramIntent.getExtras().getString(gcmMms[i++]);
+		String productName = paramIntent.getExtras().getString(gcmMms[i++]);
+		String reserveQty = paramIntent.getExtras().getString(gcmMms[i++]);
+		String reserveReceiveTime = paramIntent.getExtras().getString(gcmMms[i++]);
+		String reserveMemo = paramIntent.getExtras().getString(gcmMms[i++]);
+		String totalPrice = paramIntent.getExtras().getString(gcmMms[i++]);
+		String productInfo = paramIntent.getExtras().getString(gcmMms[i++]);
 		String title = memberName + " 님이 " + productName + "을 " + reserveQty + "개 주문하였습니다.";
 		String text = "요청사항 : " + reserveMemo;
 		
@@ -85,7 +87,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onRegistered(Context context, String regId) {
 		util = GCMUtil.getGCMUtil();
-		((GCMUtil)util).regId(getApplicationContext(), regId, "gcm/addRegId");
+		((GCMUtil)util).regId(getApplicationContext(), regId, Constants.URL_ADDREGID);
 	}
 
 	@Override
