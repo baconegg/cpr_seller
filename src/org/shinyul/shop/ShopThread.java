@@ -1,4 +1,4 @@
-package org.shinyul.widget;
+package org.shinyul.shop;
 
 import org.shinyul.gcm.GCMUtil;
 import org.shinyul.util.CommonUtils;
@@ -8,21 +8,17 @@ import org.shinyul.util.SendMessageHandler;
 import android.content.Context;
 import android.os.Message;
 
-public class WidgetThread extends Thread implements Runnable {
+public class ShopThread extends Thread implements Runnable {
 
 	private SendMessageHandler handler;
 	private CommonUtils util;
-	private int page;
-	private int selIdx;
 	private Context context;
 
 	// //////////////////////////////////////////////////////////
-	public WidgetThread(Context context, SendMessageHandler handler, int page, int selIdx) {
+	public ShopThread(Context context, SendMessageHandler handler) {
 		super();
 		this.context = context;
 		this.handler = handler;
-		this.page = page;
-		this.selIdx = selIdx;
 		
 		handler.setContext(context);
 	}
@@ -35,7 +31,7 @@ public class WidgetThread extends Thread implements Runnable {
 		Message msg = handler.obtainMessage();
 
 		// 메시지 ID 설정
-		msg.what = Constants.SEND_THREAD_INFOMATION_WIDGET;
+		msg.what = Constants.SEND_THREAD_INFOMATION_SHOP;
 
 		// 메시지 정보 설정 (int 형식)
 		// msg.arg1 = Integer.valueOf(getNowDateTime());
@@ -47,10 +43,14 @@ public class WidgetThread extends Thread implements Runnable {
 		/*
 		 * String hi = new String("Count Thared 가 동작하고 있습니다."); msg.obj = hi;
 		 */
-		util = WidgetUtil.getWidgetUtil();
-		String reserveList = ((WidgetUtil)util).receiveList(context, page, selIdx, Constants.URL_WIDGET_LIST);
+		/////////////
+		//쓰레드 이용
+		//웹상 이미지 주소를 받기
+		//받은 주소를 이용해서 이미지 그려주는 작업
+		util = ShopUtil.getShopUtil();
 		
-		msg.obj = reserveList;
+		
+//		msg.obj = ;
 		handler.sendMessage(msg);
 		
 		// 1초 딜레이

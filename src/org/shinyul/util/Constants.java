@@ -18,6 +18,7 @@ public class Constants {
 	public static final int SEND_THREAD_STOP_MESSAGE = 0;
 	public static final int SEND_THREAD_INFOMATION_WIDGET = 1;
 	public static final int SEND_THREAD_INFOMATION_LOGIN = 2;
+	public static final int SEND_THREAD_INFOMATION_SHOP = 3;
 	
 	//상수설정
 	//gcm
