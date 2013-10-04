@@ -45,7 +45,7 @@ public class IconTextListAdapter extends ArrayAdapter<IconTextItem> implements O
             TextView textViewSub = (TextView)view.findViewById(R.id.custom_list_title_sub);
              
             // 현재 item의 position에 맞는 이미지와 글을 넣어준다.          
-            imageView.setBackgroundResource(item.getImageID());
+            imageView.setImageBitmap(item.getBm());
             textViewMain.setText(item.getMainTitle());
             textViewSub.setText(item.getSubTitle());
 		}

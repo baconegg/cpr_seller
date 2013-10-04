@@ -1,9 +1,6 @@
 package org.shinyul.login;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.shinyul.cpr_seller.R;
 import org.shinyul.gcm.GCMUtil;
@@ -13,7 +10,6 @@ import org.shinyul.util.Constants;
 import org.shinyul.util.SendMessageHandler;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

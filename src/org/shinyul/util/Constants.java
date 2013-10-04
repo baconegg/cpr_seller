@@ -3,16 +3,18 @@ package org.shinyul.util;
 public class Constants {
 	
 	public static final String PROJECT_ID = "993491838738";
-	public static final String SERVERURL = "http://192.168.0.19:8080/cpr/";
 	
-	public static final String TAG = "GCM";
+	public static final String TAG = "CPR_SELLER";
 	
 	public static final String RECEIVE = "onReceiveData";
+	public static final String PAGE = "1";
 	
 	//URL
+	public static final String URL_SERVER = "http://192.168.0.19:8080/cpr/";
 	public static  final String URL_ADDREGID = "gcm/addRegId";
 	public static  final String URL_LOGIN = "logIn/";
 	public static  final String URL_WIDGET_LIST = "widget/list";
+	public static  final String URL_SHOP_LIST = "Shop/list";
 	
 	//handler
 	public static final int SEND_THREAD_STOP_MESSAGE = 0;
@@ -35,7 +37,7 @@ public class Constants {
 	public static final String MENU[] = {"상품보기","상품등록","예약확인","패키지매칭","개인정보"};    
 	public static enum Menu {GOTO_SHOP, PRODUCT_ADD, RESERVATION_CERTAIN, PACKAGE_MATCH, SELLER_INFO}; 
 	//shop
-	public static final String SHOPPARAM[] = {"selIdx"};
-	
+	public static final String SHOPPARAM[] = {"selIdx", "page"};
+	public static final String SHOPLISTVO[] = {"mobileImage", "productName", "productPrice"};
 	/*public static final String ACTION_EVENT = "org.shinyul.cpr_widget.widget.ACTION_EVENT";*/
 }

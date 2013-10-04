@@ -29,7 +29,7 @@ public class CommonUtils{
    */
   protected String post(String path, Map<String, String> paramMap, String cmd) {
 	   
-	  	String serverUrl = Constants.SERVERURL+ path;
+	  	String serverUrl = Constants.URL_SERVER+ path;
 	    Log.i(Constants.TAG , serverUrl);
 	    
 	    URL url = null;

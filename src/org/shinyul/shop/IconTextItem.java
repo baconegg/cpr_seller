@@ -1,25 +1,25 @@
 package org.shinyul.shop;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 
 public class IconTextItem {
 
-	private int imageID;
+	private Bitmap bm;
 	private String mainTitle;
 	private String subTitle;
 	
-	public IconTextItem(int imageID, String mainTitle, String subTitle) {
+	public IconTextItem(Bitmap bm, String mainTitle, String subTitle) {
 		super();
-		this.imageID = imageID;
+		this.bm = bm;
 		this.mainTitle = mainTitle;
 		this.subTitle = subTitle;
 	}
-
-	public int getImageID() {
-		return imageID;
+	
+	public Bitmap getBm() {
+		return bm;
 	}
-	public void setImageID(int imageID) {
-		this.imageID = imageID;
+	public void setBm(Bitmap bm) {
+		this.bm = bm;
 	}
 	public String getMainTitle() {
 		return mainTitle;

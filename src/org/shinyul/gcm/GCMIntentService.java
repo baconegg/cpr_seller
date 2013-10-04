@@ -58,7 +58,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		NotificationManager noticeManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
-		Intent alertIntent = new Intent("android.intent.action.VIEW", Uri.parse(Constants.SERVERURL));
+		Intent alertIntent = new Intent("android.intent.action.VIEW", Uri.parse(Constants.URL_SERVER));
 		
 		alertIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
