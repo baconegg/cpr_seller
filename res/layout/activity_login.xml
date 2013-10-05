@@ -53,4 +53,12 @@
         android:layout_marginTop="30dp"
         android:text="LogIn" />
 
+    <CheckBox
+        android:id="@+id/autoLogIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnLogIn"
+        android:layout_alignLeft="@+id/textPw"
+        android:text="자동로그인" />
+
 </RelativeLayout>

@@ -1,5 +1,8 @@
 package org.shinyul.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.shinyul.login.MainActivity;
 import org.shinyul.shop.ShopActivity;
 import org.shinyul.widget.WidgetProvider;
@@ -15,6 +18,7 @@ public class SendMessageHandler extends Handler {
 
 	private Context context;
 	private String rcvData;
+	private Map<String, String> preData;
 	private CommonUtils util;
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public Context getContext() {
@@ -63,9 +67,18 @@ public class SendMessageHandler extends Handler {
 			
 			break;
 			
+		case Constants.SEND_THREAD_INFOMATION_AUTO_LOGIN:
+			Log.i(Constants.TAG, "SEND_THREAD_INFOMATION_AUTO_LOGIN 오니?");
+			
+			preData = (HashMap<String, String>)msg.obj;
+			((MainActivity)context).updatePreData(preData);
+			((MainActivity)context).logIn();
+			
+			break;
+			
 		default:
 			break;
 		}
-		Log.i(Constants.TAG, rcvData);
+//		Log.i(Constants.TAG, rcvData);
 	}
 }

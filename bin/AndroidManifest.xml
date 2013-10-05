@@ -27,6 +27,11 @@
         </activity>
         
         <activity 
+            android:name="org.shinyul.webview.WebViewActivity" 
+            android:configChanges="orientation|screenSize"
+            android:label="Seller"></activity>
+        
+        <activity 
             android:name="org.shinyul.menu.MenuActivity" 
             android:label="Menu"></activity>
        

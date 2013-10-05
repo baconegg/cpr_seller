@@ -10,7 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.ListView;
-
+//현재 이 클래스는 사용안함..
 public class MenuActivity extends Activity {
 
 	private Context appContext = null;

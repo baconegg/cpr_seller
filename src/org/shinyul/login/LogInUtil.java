@@ -3,11 +3,9 @@ package org.shinyul.login;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shinyul.gcm.GCMUtil;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 
@@ -15,7 +13,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 public class LogInUtil extends CommonUtils {
 
@@ -60,7 +57,7 @@ public class LogInUtil extends CommonUtils {
 	
 	// /////////////////////////////////////////////////////////////////////////////////////////////
 	// 값 저장하기
-	public Map<String, String> savePreferences(Context context, String rcvData) {
+	public Map<String, String> savePreferences(Context context, String rcvData, String memberPw) {
 		util = LogInUtil.getLogInUtil();
 		Map<String, String> data = ((LogInUtil) util).getLogInData(rcvData);
 
@@ -75,9 +72,19 @@ public class LogInUtil extends CommonUtils {
 		editor.putString(logInData[i], data.get(logInData[i++]));
 		editor.putInt(logInData[i], Integer.valueOf(data.get(logInData[i++])).intValue());
 		editor.putInt(logInData[i], Integer.valueOf(data.get(logInData[i++])).intValue());
+		editor.putString(logInData[i++], memberPw);
 		editor.commit();
 		
 		return data;
+	}
+	
+	//값 읽기
+	public Map<String, String> checkPreferences(Context context){
+		
+		String logInData[] = Constants.LOGINDATA;
+		int i = 0;
+		SharedPreferences pref = context.getSharedPreferences(logInData[i++], 0);
+		return (Map<String, String>) pref.getAll();
 	}
 
 	//값저장하기 번들편..

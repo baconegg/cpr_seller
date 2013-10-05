@@ -123,7 +123,13 @@ public class GCMUtil extends CommonUtils {
 	public void regId(Context context, String regId, String path) {
 		String phoneNumber = getPhoneNumber(context);
 		HashMap<String, String> paramMap = new HashMap<String, String>();
-		removePreferences(context);
+		
+		////////////////////////////////////////////////////////////////
+		//auto login 시에는 지우면 안됨...
+//		if(Constants.AUTO_LOGIN_CHK = false){
+//			removePreferences(context);
+//		}
+		///////////////////////////////////////////////////////////////
 		
 		String regIds[] = Constants.REGID;
 		int i = 0;

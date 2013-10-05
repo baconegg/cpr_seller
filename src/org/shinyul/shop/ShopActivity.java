@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.ListView;
-
+//현재 이 클래스는 사용안함..
 public class ShopActivity extends Activity {
 
 	private Context appContext = null;

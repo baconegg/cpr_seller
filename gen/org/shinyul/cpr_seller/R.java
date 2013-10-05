@@ -25,31 +25,34 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int Cusom_List=0x7f090005;
-        public static final int LinearLayout1=0x7f09000e;
-        public static final int action_settings=0x7f090011;
+        public static final int Cusom_List=0x7f090006;
+        public static final int LinearLayout1=0x7f090010;
+        public static final int action_settings=0x7f090013;
+        public static final int autoLogIn=0x7f090005;
         public static final int btnLogIn=0x7f090004;
-        public static final int content=0x7f09000a;
-        public static final int custom_list_image=0x7f09000d;
-        public static final int custom_list_title_main=0x7f09000f;
-        public static final int custom_list_title_sub=0x7f090010;
-        public static final int empty_view=0x7f090007;
-        public static final int heading=0x7f090009;
-        public static final int imageView=0x7f090008;
-        public static final int image_layout=0x7f09000c;
-        public static final int listViewWidget=0x7f090006;
-        public static final int list_item_layout=0x7f09000b;
+        public static final int content=0x7f09000c;
+        public static final int custom_list_image=0x7f09000f;
+        public static final int custom_list_title_main=0x7f090011;
+        public static final int custom_list_title_sub=0x7f090012;
+        public static final int empty_view=0x7f090009;
+        public static final int heading=0x7f09000b;
+        public static final int imageView=0x7f09000a;
+        public static final int image_layout=0x7f09000e;
+        public static final int listViewWidget=0x7f090008;
+        public static final int list_item_layout=0x7f09000d;
         public static final int memberId=0x7f090002;
         public static final int memberPw=0x7f090003;
         public static final int textId=0x7f090001;
         public static final int textPw=0x7f090000;
+        public static final int webview=0x7f090007;
     }
     public static final class layout {
         public static final int activity_login=0x7f030000;
         public static final int activity_menu=0x7f030001;
-        public static final int activity_widget=0x7f030002;
-        public static final int list_row=0x7f030003;
-        public static final int listitem=0x7f030004;
+        public static final int activity_webview=0x7f030002;
+        public static final int activity_widget=0x7f030003;
+        public static final int list_row=0x7f030004;
+        public static final int listitem=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f080000;

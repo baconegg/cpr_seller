@@ -165,19 +165,17 @@ public class CommonUtils{
 	}
 
 	// 값(Key Data) 삭제하기
-	protected void removePreferences(Context context) {
+	public void removePreferences(Context context) {
 		
 		String logIn[] = Constants.LOGINDATA;
-		int i = 0;
 		
-		SharedPreferences pref = context.getSharedPreferences(logIn[i++], context.MODE_PRIVATE);
+		//0번째는 무조건 번들이름임..
+		SharedPreferences pref = context.getSharedPreferences(logIn[0], context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
-		editor.remove(logIn[i++]);
-		editor.remove(logIn[i++]);
-		editor.remove(logIn[i++]);
-		editor.remove(logIn[i++]);
-		editor.remove(logIn[i++]);
-		editor.remove(logIn[i++]);
+		//따라서 1번부터 시작..
+		for(int i = 1; i < logIn.length; i++){
+			editor.remove(logIn[i]);
+		}
 		editor.commit();
 	}
 }
