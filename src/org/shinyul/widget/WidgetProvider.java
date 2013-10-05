@@ -1,6 +1,6 @@
 package org.shinyul.widget;
 
-import org.shinyul.cpr_widget.R;
+import org.shinyul.cpr_seller.R;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import android.appwidget.AppWidgetManager;
@@ -136,8 +136,8 @@ public class WidgetProvider extends AppWidgetProvider {
 	
 	/////////////////////////////////////////////////////////////////////////
 	//데이터 업데이트
-	public void updateData(String reserveList){
-		this.reserveList = reserveList;
+	public void updateData(String rcvData){
+		this.reserveList = rcvData;
 		//reserveList = pref.getString("reserveList","[{reserveIdx:0,'productName':'예약이 없습니다NAME.','productInfo':'예약이 없습니다INFO'}]");
 	}
 }

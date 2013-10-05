@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.shinyul.cpr_widget"
+    package="org.shinyul.cpr_seller"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -23,9 +23,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            
         </activity>
         
+        <activity 
+            android:name="org.shinyul.webview.WebViewActivity" 
+            android:configChanges="orientation|screenSize"
+            android:label="Seller"></activity>
+        
+        <activity 
+            android:name="org.shinyul.menu.MenuActivity" 
+            android:label="Menu"></activity>
        
+        <activity 
+            android:name="org.shinyul.shop.ShopActivity" 
+            android:label="MyShop"></activity>
+        
         <!-- GCM 리시버 -->
 		<receiver
 		   android:name="com.google.android.gcm.GCMBroadcastReceiver"

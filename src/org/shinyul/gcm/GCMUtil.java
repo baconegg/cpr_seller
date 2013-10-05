@@ -2,12 +2,16 @@ package org.shinyul.gcm;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gcm.GCMRegistrar;
 
 public class GCMUtil extends CommonUtils {
@@ -73,11 +77,12 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void unregister(Context context, String regId) {
 
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("regId", regId);
-		post("url넣어주셈", params, "");
+//		String regIds[] = Constants.REGID;
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put(regIds[0], regId);
+//		post("url넣어주셈", params, "");
+		
 		GCMRegistrar.setRegisteredOnServer(context, false);
-
 	}
 
 	/**
@@ -92,8 +97,7 @@ public class GCMUtil extends CommonUtils {
 
 	public String getPhoneNumber(Context paramContext) {
 
-		return ((TelephonyManager) paramContext.getSystemService("phone"))
-				.getLine1Number();
+		return ((TelephonyManager) paramContext.getSystemService("phone")).getLine1Number();
 	}
 
 	public boolean isEmpty(String value) {
@@ -118,46 +122,23 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void regId(Context context, String regId, String path) {
 		String phoneNumber = getPhoneNumber(context);
-
 		HashMap<String, String> paramMap = new HashMap<String, String>();
-
-		paramMap.put("regId", regId);
-		paramMap.put("phoneNumber", phoneNumber);
-
-		Log.i("GCM", "regId : " + regId);
-		Log.i("GCM", "phoneNumber : " + phoneNumber);
+		
+		////////////////////////////////////////////////////////////////
+		//auto login 시에는 지우면 안됨...
+//		if(Constants.AUTO_LOGIN_CHK = false){
+//			removePreferences(context);
+//		}
+		///////////////////////////////////////////////////////////////
+		
+		String regIds[] = Constants.REGID;
+		int i = 0;
+		
+		paramMap.put(regIds[i++], regId);
+		paramMap.put(regIds[i++], String.valueOf(getPreferences(context)));
+		paramMap.put(regIds[i++], phoneNumber);
 
 		post(path, paramMap, "");
-
 	}
-
-	/**
-	 * 1. reserveList를 받기위해
-	 * 
-	 * @param page
-	 * @param selIdx
-	 *            보냄. 2. resrveList 받아옴.
-	 */
-	public String receiveList(Context context, Integer page, Integer selIdx,
-			String path) {
-		Log.i(Constants.TAG, "reserveList in");
-
-		HashMap<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("page", String.valueOf(page));
-		paramMap.put("selIdx", String.valueOf(selIdx));
-
-		Log.i(Constants.TAG, "enter the onReceive before");
-
-		return post(path, paramMap, "onReceiveList");
-	}
-
-	// //////////////////////////////////////////////////////////////////////////
-	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
-	public void processThread(Context context) {
-		PrivateThread thread = new PrivateThread();
-//		SendMessageHandler handler = new SendMessageHandler();
-//		thread.setHandler(handler);
-		thread.context = context;
-		thread.start();
-	}
+	
 }

@@ -1,8 +1,10 @@
 package org.shinyul.gcm;
 
-import org.shinyul.cpr_widget.R;
+import org.shinyul.cpr_seller.R;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
+import org.shinyul.util.SendMessageHandler;
+import org.shinyul.widget.WidgetThread;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
@@ -28,16 +31,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onMessage(Context context, Intent paramIntent) {
 		
 		Log.i("GCM", "오냐안오녀?");
+		String gcmMms[] = Constants.GCMMMS;
+		int i = 0;
 		
-		String protocol = paramIntent.getStringExtra("protocol");
-		String content = paramIntent.getExtras().getString("content");
-		String memberName = paramIntent.getExtras().getString("memberName");
-		String productName = paramIntent.getExtras().getString("productName");
-		String reserveQty = paramIntent.getExtras().getString("reserveQty");
-		String reserveReceiveTime = paramIntent.getExtras().getString("reserveReceiveTime");
-		String reserveMemo = paramIntent.getExtras().getString("reserveMemo");
-		String totalPrice = paramIntent.getExtras().getString("totalPrice");
-		String productInfo = paramIntent.getExtras().getString("productInfo");
+		String protocol = paramIntent.getStringExtra(gcmMms[i++]);
+		String content = paramIntent.getExtras().getString(gcmMms[i++]);
+		String memberName = paramIntent.getExtras().getString(gcmMms[i++]);
+		String productName = paramIntent.getExtras().getString(gcmMms[i++]);
+		String reserveQty = paramIntent.getExtras().getString(gcmMms[i++]);
+		String reserveReceiveTime = paramIntent.getExtras().getString(gcmMms[i++]);
+		String reserveMemo = paramIntent.getExtras().getString(gcmMms[i++]);
+		String totalPrice = paramIntent.getExtras().getString(gcmMms[i++]);
+		String productInfo = paramIntent.getExtras().getString(gcmMms[i++]);
 		String title = memberName + " 님이 " + productName + "을 " + reserveQty + "개 주문하였습니다.";
 		String text = "요청사항 : " + reserveMemo;
 		
@@ -53,7 +58,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		NotificationManager noticeManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
-		Intent alertIntent = new Intent("android.intent.action.VIEW", Uri.parse(Constants.SERVERURL));
+		Intent alertIntent = new Intent("android.intent.action.VIEW", Uri.parse(Constants.URL_SERVER));
 		
 		alertIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
@@ -75,14 +80,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		noticeManager.notify(0, notice);
 		
-		((GCMUtil)util).processThread(context);
+		processThread(context);
 		
 	}
 
 	@Override
 	protected void onRegistered(Context context, String regId) {
 		util = GCMUtil.getGCMUtil();
-		((GCMUtil) util).regId(getApplicationContext(), regId, "gcm/addRegId");
+		((GCMUtil)util).regId(getApplicationContext(), regId, Constants.URL_ADDREGID);
 	}
 
 	@Override
@@ -100,4 +105,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 	}
 	
+	// //////////////////////////////////////////////////////////////////////////
+	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
+	public void processThread(Context context) {
+		WidgetThread thread = new WidgetThread(context, new SendMessageHandler(), 1, 3);
+		thread.setDaemon(true);
+		thread.start();
+	}
 }
