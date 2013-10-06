@@ -2,12 +2,16 @@ package org.shinyul.gcm;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.gcm.GCMRegistrar;
 
 public class GCMUtil extends CommonUtils {
@@ -33,8 +37,10 @@ public class GCMUtil extends CommonUtils {
 		 */
 		try {
 			GCMRegistrar.checkDevice(context);
+			GCMRegistrar.checkManifest(context);
 		} catch (Exception e) {
 			Log.e(Constants.TAG, "This device can't use GCM");
+			Toast.makeText(context, "이 디바이스는 GCM 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -43,7 +49,7 @@ public class GCMUtil extends CommonUtils {
 		 * 리턴
 		 */
 		String regId = GCMRegistrar.getRegistrationId(context);
-
+		Toast.makeText(context, "regId check : " + regId, Toast.LENGTH_SHORT).show();
 		/**
 		 * Registration Id가 없는 경우(어플리케이션 최초 설치로 발급받은 적이 없거나, 삭제 후 재설치 등
 		 * SharedPreference에 저장된 Registration Id가 없는 경우가 이에 해당한다.)
@@ -55,12 +61,10 @@ public class GCMUtil extends CommonUtils {
 			 * GCMIntentService.class의 onRegistered를 콜백한다.
 			 */
 			GCMRegistrar.register(context, Constants.PROJECT_ID);
-			Toast.makeText(context, "GCM ID를 새로 등록하였습니다.", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(context, "regId 받음 : " + regId, Toast.LENGTH_SHORT).show();
 		} else {
 			Log.i(Constants.TAG, "Exist Registration Id: " + regId);
-			Toast.makeText(context, "GCM ID가 등록되어있습니다.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(context, "GCM ID가 등록되어있습니다.", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -73,11 +77,12 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void unregister(Context context, String regId) {
 
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("regId", regId);
-		post("url넣어주셈", params, "");
+//		String regIds[] = Constants.REGID;
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put(regIds[0], regId);
+//		post("url넣어주셈", params, "");
+		
 		GCMRegistrar.setRegisteredOnServer(context, false);
-
 	}
 
 	/**
@@ -92,8 +97,7 @@ public class GCMUtil extends CommonUtils {
 
 	public String getPhoneNumber(Context paramContext) {
 
-		return ((TelephonyManager) paramContext.getSystemService("phone"))
-				.getLine1Number();
+		return ((TelephonyManager) paramContext.getSystemService("phone")).getLine1Number();
 	}
 
 	public boolean isEmpty(String value) {
@@ -118,46 +122,18 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void regId(Context context, String regId, String path) {
 		String phoneNumber = getPhoneNumber(context);
+		Map<String, String> paramMap = new HashMap<String, String>();
+		
+		String regIds[] = Constants.REGID;
+		int i = 0;
+		
+		paramMap.put(regIds[i++], regId);
+		paramMap.put(regIds[i++], String.valueOf(getPreferences(context)));
+		paramMap.put(regIds[i++], phoneNumber);
 
-		HashMap<String, String> paramMap = new HashMap<String, String>();
-
-		paramMap.put("regId", regId);
-		paramMap.put("phoneNumber", phoneNumber);
-
-		Log.i("GCM", "regId : " + regId);
-		Log.i("GCM", "phoneNumber : " + phoneNumber);
-
+		Toast.makeText(context, "regId 호출..", Toast.LENGTH_LONG).show();
+		
 		post(path, paramMap, "");
-
 	}
-
-	/**
-	 * 1. reserveList를 받기위해
-	 * 
-	 * @param page
-	 * @param selIdx
-	 *            보냄. 2. resrveList 받아옴.
-	 */
-	public String receiveList(Context context, Integer page, Integer selIdx,
-			String path) {
-		Log.i(Constants.TAG, "reserveList in");
-
-		HashMap<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("page", String.valueOf(page));
-		paramMap.put("selIdx", String.valueOf(selIdx));
-
-		Log.i(Constants.TAG, "enter the onReceive before");
-
-		return post(path, paramMap, "onReceiveList");
-	}
-
-	// //////////////////////////////////////////////////////////////////////////
-	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
-	public void processThread(Context context) {
-		PrivateThread thread = new PrivateThread();
-//		SendMessageHandler handler = new SendMessageHandler();
-//		thread.setHandler(handler);
-		thread.context = context;
-		thread.start();
-	}
+	
 }

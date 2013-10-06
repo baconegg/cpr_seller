@@ -1,11 +1,17 @@
 package org.shinyul.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.shinyul.util.CommonUtils;
+import org.shinyul.util.Constants;
+
+import android.content.Context;
+import android.util.Log;
 
 public class WidgetUtil extends CommonUtils {
 
@@ -15,13 +21,34 @@ public class WidgetUtil extends CommonUtils {
 		return util;
 	}
 
-	// ////////////////////////////////////////////////////////////////////////
-	public List<ReserveVO> getList(String reserveList) {
-		// //////////////////////////////////////parsing part////////////////////////////////////
+	/**
+	 * 1. reserveList를 받기위해
+	 * 
+	 * @param page
+	 * @param selIdx
+	 *            보냄. 2. resrveList 받아옴.
+	 */
+	public String receiveList(Context context, Integer page, Integer selIdx, String path) {
+		Log.i(Constants.TAG, "reserveList in");
+
+		String widgetParam[] = Constants.WIDGETPARAM;
+		int i = 0;
+		
+		HashMap<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put(widgetParam[i++], String.valueOf(page));
+		paramMap.put(widgetParam[i++], String.valueOf(selIdx));
+
+		Log.i(Constants.TAG, "enter the onReceive before");
+
+		return post(path, paramMap, Constants.RECEIVE);
+	}
+	
+	/////////////////////////////////////////////////////////////////////
+	//파싱
+	public List<ReserveVO> getReserveData(String rcvData) {
 		List<ReserveVO> list = new ArrayList<ReserveVO>();
-		JSONArray jsonArray = null;
 		try {
-			jsonArray = new JSONArray(reserveList);
+			JSONArray jsonArray = util.exchangeData(rcvData);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject obj = jsonArray.getJSONObject(i);
 				// Log.i(Constants.TAG, obj.getString("reserveIdx"));
@@ -35,33 +62,36 @@ public class WidgetUtil extends CommonUtils {
 		return list;
 	}
 
-	///////////////////////////////
+	/////////////////////////////////////////////////////////////////////
 	//vo setting
 	public ReserveVO voInit(JSONObject obj) {
 		ReserveVO vo = new ReserveVO();
+		String reserveVO[] = Constants.RESERVEVO;
+		int i = 0;
+		
 		try {
-			vo.setReserveIdx(obj.getInt("reserveIdx"));
-			vo.setProductName(obj.getString("productName"));
-			vo.setProductInfo(obj.getString("productInfo"));
-			vo.setReserveTime(obj.getString("reserveTime"));
-			vo.setProductIdx(obj.getInt("productIdx"));
-			vo.setProductPrice(obj.getInt("productPrice"));
-			vo.setReserveQty(obj.getInt("reserveQty"));
-			vo.setReserveReceiveTime(obj.getString("reserveReceiveTime"));
-			vo.setReserveMemo(obj.getString("reserveMemo"));
-			vo.setReserveFlag(obj.getInt("reserveFlag"));
-			vo.setCustomerIdx(obj.getInt("customerIdx"));
-			vo.setMemberIdx(obj.getInt("memberIdx"));
-			vo.setMemberId(obj.getString("memberId"));
-			vo.setMemberName(obj.getString("memberName"));
-			vo.setMemberTel(obj.getString("memberTel"));
-			vo.setMemberLev(obj.getInt("memberLev"));
-			vo.setSelIdx(obj.getInt("selIdx"));
-			vo.setTotal(obj.getInt("total"));
-			vo.setTotalPrice(obj.getInt("totalPrice"));
-			vo.setMarId(obj.getString("marId"));
-			vo.setSelStore(obj.getString("selStore"));
-			vo.setProductImgUuid(obj.getString("productImgUuid"));
+			vo.setReserveIdx(obj.getInt(reserveVO[i++]));
+			vo.setProductName(obj.getString(reserveVO[i++]));
+			vo.setProductInfo(obj.getString(reserveVO[i++]));
+			vo.setReserveTime(obj.getString(reserveVO[i++]));
+			vo.setProductIdx(obj.getInt(reserveVO[i++]));
+			vo.setProductPrice(obj.getInt(reserveVO[i++]));
+			vo.setReserveQty(obj.getInt(reserveVO[i++]));
+			vo.setReserveReceiveTime(obj.getString(reserveVO[i++]));
+			vo.setReserveMemo(obj.getString(reserveVO[i++]));
+			vo.setReserveFlag(obj.getInt(reserveVO[i++]));
+			vo.setCustomerIdx(obj.getInt(reserveVO[i++]));
+			vo.setMemberIdx(obj.getInt(reserveVO[i++]));
+			vo.setMemberId(obj.getString(reserveVO[i++]));
+			vo.setMemberName(obj.getString(reserveVO[i++]));
+			vo.setMemberTel(obj.getString(reserveVO[i++]));
+			vo.setMemberLev(obj.getInt(reserveVO[i++]));
+			vo.setSelIdx(obj.getInt(reserveVO[i++]));
+			vo.setTotal(obj.getInt(reserveVO[i++]));
+			vo.setTotalPrice(obj.getInt(reserveVO[i++]));
+			vo.setMarId(obj.getString(reserveVO[i++]));
+			vo.setSelStore(obj.getString(reserveVO[i++]));
+			vo.setProductImgUuid(obj.getString(reserveVO[i++]));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
