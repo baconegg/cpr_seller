@@ -54,8 +54,8 @@ public class SendMessageHandler extends Handler {
 			
 			rcvData = msg.obj.toString();
 			
-			((MainActivity)context).updateData(rcvData);
-			((MainActivity)context).toGCM(context);
+//			((MainActivity)context).updateData(rcvData);
+//			((MainActivity)context).toGCM(context);
 			break;
 
 		case Constants.SEND_THREAD_INFOMATION_SHOP:
@@ -71,8 +71,8 @@ public class SendMessageHandler extends Handler {
 			Log.i(Constants.TAG, "SEND_THREAD_INFOMATION_AUTO_LOGIN 오니?");
 			
 			preData = (HashMap<String, String>)msg.obj;
-			((MainActivity)context).updatePreData(preData);
-			((MainActivity)context).logIn();
+//			((MainActivity)context).updatePreData(preData);
+//			((MainActivity)context).logIn();
 			
 			break;
 			

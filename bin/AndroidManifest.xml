@@ -46,7 +46,7 @@
 		   <intent-filter>
 		      <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 		      <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-		      <category android:name="org.shinyul.cpr_widget" /> <!-- 젤리빈 부터는 category 빼도 된다 -->
+		      <category android:name="org.shinyul.cpr_seller" /> <!-- 젤리빈 부터는 category 빼도 된다 -->
 		   </intent-filter>
 		</receiver>		
 		       
@@ -71,8 +71,8 @@
     </application>
 
     <!-- GCM 관련 퍼미션 -->
-	<permission android:name="org.shinyul.cpr_widget.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="org.shinyul.cpr_widget.permission.C2D_MESSAGE" /> 
+	<permission android:name="org.shinyul.cpr_seller.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="org.shinyul.cpr_seller.permission.C2D_MESSAGE" /> 
 	<!-- GCM 받기 -->
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	<!-- GCM을 받으려면 구글 계정 필요 -->
@@ -80,11 +80,14 @@
 	<!-- 메시지 받을 때 wake up 하기 위해 -->
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<!-- 네트워크 접속 권한 -->
-	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<!-- GCM 받을때 진동 -->
 	<uses-permission android:name="android.permission.VIBRATE" />
 	 <!-- GPS를 이용한 위치 확인 -->
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> 
     <!--  전화번호 가져올 때 인증 -->
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<!--  카메라 -->
+	<uses-permission android:name="android.permission.CAMERA" />
 </manifest>

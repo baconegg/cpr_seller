@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -59,7 +58,6 @@ public class MainActivity extends Activity {
 	}
 
 	protected void onDestroy() {
-
 		util = GCMUtil.getGCMUtil();
 		((GCMUtil) util).deleteRegId(this.appContext);
 		Log.i(Constants.TAG, "mainActivity Destroy");
@@ -77,6 +75,14 @@ public class MainActivity extends Activity {
 				memberId = ID.getText().toString();
 				memberPw = PW.getText().toString();
 				
+				//////자동로그인 체크박스 확인////////////////
+				if(logInChk.isChecked()){
+					Constants.auto_LogIn_Chk = true;
+				}else{
+					Constants.auto_LogIn_Chk = false;
+				}
+				///////////////////////////////////
+				
 				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
 				thread.setDaemon(true);
 				thread.start();
@@ -93,17 +99,13 @@ public class MainActivity extends Activity {
 		String chk[] = Constants.LOGINCHK;
 		if(preData.containsKey(chk[1]) && preData.containsKey(chk[0])){
 			//check박스 활성화
-			Constants.AUTO_LOGIN_CHK = true;
-			logInChk.setChecked(Constants.AUTO_LOGIN_CHK);
+			Constants.auto_LogIn_Chk = true;
+			logInChk.setChecked(Constants.auto_LogIn_Chk);
 			
 			//ID, PW 셋팅
 			ID.setText(preData.get(chk[0]));
 			PW.setText(preData.get(chk[1]));
 			btnLogIN.performClick();
-		}else{
-			if(logInChk.isChecked()){
-				Constants.AUTO_LOGIN_CHK = true;
-			}
 		}
 		/////////////////////////////////////////////////////////////
 	}
@@ -135,18 +137,17 @@ public class MainActivity extends Activity {
 		Map<String, String> data = ((LogInUtil) util).savePreferences(context, logInData, memberPw);
 		
 		//////////////////
-		if("0".equals(data.get("chk"))){
+		if(Constants.GCM_CHK.equals(data.get("chk"))){
 			// login성공
 			CommonUtils	utils = GCMUtil.getGCMUtil();
 			((GCMUtil)utils).startGCM(context);
 			
 			///////////////////////////////////////////////////////////
 			//auto login 체크안 되 있을 땐 preferences 지움.. 
-			if(Constants.AUTO_LOGIN_CHK == false){
+			if(Constants.auto_LogIn_Chk == false){
 				util = LogInUtil.getLogInUtil();
 				((LogInUtil)util).removePreferences(context);
 				Log.i(Constants.TAG, "remove preferences");
-				Constants.AUTO_LOGIN_CHK = false;
 			}
 			///////////////////////////////////////////////////////////
 			
@@ -163,3 +164,4 @@ public class MainActivity extends Activity {
 		}
 	}
 }
+

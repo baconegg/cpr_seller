@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -51,11 +52,15 @@ public class WebViewActivity extends Activity {
 		setLayout();
 		 // 웹뷰에서 자바스크립트실행가능
         mWebView.getSettings().setJavaScriptEnabled(true); 
-        // 구글홈페이지 지정
-        mWebView.loadUrl(Constants.URL_SERVER + Constants.URL_WEBVIEW + memberId + "/" + memberPw + "/" + Integer.valueOf(selIdx).intValue());
-//        mWebView.loadUrl("http://www.naver.com");
+       
         // WebViewClient 지정
-        mWebView.setWebViewClient(new WebViewClientClass());  
+        mWebView.setWebViewClient(new WebViewClientClass());
+//        mWebView.setWebChromeClient(new WebChromeClient());
+        
+        // 홈페이지 지정
+        mWebView.loadUrl(Constants.URL_SERVER + Constants.URL_WEBVIEW + memberId + "/" + memberPw + "/" + Integer.valueOf(selIdx).intValue());
+        
+        
 	}
 
 	protected void onDestroy() {
@@ -69,6 +74,7 @@ public class WebViewActivity extends Activity {
 //		 getMenuInflater().inflate(R.menu.main, menu);
 		 
 		 menu.add(0,1,0,"자동로그인 해제");
+		 menu.add(0,2,0,"새로고침");
 		 
 		 return true;
 	 }
@@ -82,16 +88,20 @@ public class WebViewActivity extends Activity {
 			
 			///////////////////////////////////////////////////////////
 			//auto login 체크안 되 있을 땐 preferences 지움.. 
-			if(Constants.AUTO_LOGIN_CHK == true){
+			if(Constants.auto_LogIn_Chk == true){
 				util = LogInUtil.getLogInUtil();
 				((LogInUtil)util).removePreferences(appContext);
 				Log.i(Constants.TAG, "remove preferences");
-				Constants.AUTO_LOGIN_CHK = false;
-				Toast.makeText(appContext, "적용되었습니다.", Toast.LENGTH_LONG);
+				Constants.auto_LogIn_Chk = false;
+				Toast.makeText(appContext, "적용되었습니다.", Toast.LENGTH_LONG).show();
 			}else{
-				Toast.makeText(appContext, "자동로그인중이 아닙니다.", Toast.LENGTH_LONG);
+				Toast.makeText(appContext, "자동로그인중이 아닙니다.", Toast.LENGTH_LONG).show();
 			}
 			
+			break;
+			
+		case 2:
+			mWebView.reload();
 			break;
 			
 		}
@@ -125,7 +135,12 @@ public class WebViewActivity extends Activity {
     private class WebViewClientClass extends WebViewClient { 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) { 
-            view.loadUrl(url); 
+//        	Toast.makeText(appContext,"[" + url + "]", Toast.LENGTH_LONG).show();
+        	
+        	if(!(url.endsWith("undefined"))){
+        		view.loadUrl(url);
+        	}
+        	
             return true; 
         } 
     }

@@ -37,8 +37,10 @@ public class GCMUtil extends CommonUtils {
 		 */
 		try {
 			GCMRegistrar.checkDevice(context);
+			GCMRegistrar.checkManifest(context);
 		} catch (Exception e) {
 			Log.e(Constants.TAG, "This device can't use GCM");
+			Toast.makeText(context, "이 디바이스는 GCM 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -47,7 +49,7 @@ public class GCMUtil extends CommonUtils {
 		 * 리턴
 		 */
 		String regId = GCMRegistrar.getRegistrationId(context);
-
+		Toast.makeText(context, "regId check : " + regId, Toast.LENGTH_SHORT).show();
 		/**
 		 * Registration Id가 없는 경우(어플리케이션 최초 설치로 발급받은 적이 없거나, 삭제 후 재설치 등
 		 * SharedPreference에 저장된 Registration Id가 없는 경우가 이에 해당한다.)
@@ -59,12 +61,10 @@ public class GCMUtil extends CommonUtils {
 			 * GCMIntentService.class의 onRegistered를 콜백한다.
 			 */
 			GCMRegistrar.register(context, Constants.PROJECT_ID);
-			Toast.makeText(context, "GCM ID를 새로 등록하였습니다.", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(context, "regId 받음 : " + regId, Toast.LENGTH_SHORT).show();
 		} else {
 			Log.i(Constants.TAG, "Exist Registration Id: " + regId);
-			Toast.makeText(context, "GCM ID가 등록되어있습니다.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(context, "GCM ID가 등록되어있습니다.", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -122,14 +122,7 @@ public class GCMUtil extends CommonUtils {
 	 */
 	public void regId(Context context, String regId, String path) {
 		String phoneNumber = getPhoneNumber(context);
-		HashMap<String, String> paramMap = new HashMap<String, String>();
-		
-		////////////////////////////////////////////////////////////////
-		//auto login 시에는 지우면 안됨...
-//		if(Constants.AUTO_LOGIN_CHK = false){
-//			removePreferences(context);
-//		}
-		///////////////////////////////////////////////////////////////
+		Map<String, String> paramMap = new HashMap<String, String>();
 		
 		String regIds[] = Constants.REGID;
 		int i = 0;
@@ -138,6 +131,8 @@ public class GCMUtil extends CommonUtils {
 		paramMap.put(regIds[i++], String.valueOf(getPreferences(context)));
 		paramMap.put(regIds[i++], phoneNumber);
 
+		Toast.makeText(context, "regId 호출..", Toast.LENGTH_LONG).show();
+		
 		post(path, paramMap, "");
 	}
 	

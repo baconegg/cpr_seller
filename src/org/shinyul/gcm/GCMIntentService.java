@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
@@ -84,12 +85,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 	}
 
+	/**단말에서 GCM 서비스 등록 했을 때 등록 id를 받는다*/
 	@Override
 	protected void onRegistered(Context context, String regId) {
+		Toast.makeText(context, "onRegistered regId : " + regId, Toast.LENGTH_SHORT).show();
 		util = GCMUtil.getGCMUtil();
 		((GCMUtil)util).regId(getApplicationContext(), regId, Constants.URL_ADDREGID);
+		Toast.makeText(context, "GCM ID를  등록하였습니다. : " + regId, Toast.LENGTH_LONG).show();
 	}
 
+	/**단말에서 GCM 서비스 등록 해지를 하면 해지된 등록 id를 받는다*/
 	@Override
 	protected void onUnregistered(Context context, String regId) {
 		

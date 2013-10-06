@@ -48,7 +48,9 @@ public class CommonUtils{
 			
 			//connection 얻기
 			conn = getConnection(url,"POST", params.getBytes().length);
-			
+			//test용
+			conn.setUseCaches(false);
+
 			//인자값(파라미터) 보내기
 			onWrite(conn, params.getBytes());
 			
@@ -147,7 +149,7 @@ public class CommonUtils{
  	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	//sharedPreferences
 	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 값 불러오기
+	// 값 불러오기 -- memberIdx만 필요해서..리턴을 바꿈..
 	protected int getPreferences(Context context) {
 		
 		String logIn[] = Constants.LOGINDATA;

@@ -11,6 +11,6 @@ public final class Manifest {
     public static final class permission {
         /**  GCM 관련 퍼미션 
          */
-        public static final String C2D_MESSAGE="org.shinyul.cpr_widget.permission.C2D_MESSAGE";
+        public static final String C2D_MESSAGE="org.shinyul.cpr_seller.permission.C2D_MESSAGE";
     }
 }

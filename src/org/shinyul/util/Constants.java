@@ -2,7 +2,8 @@ package org.shinyul.util;
 
 public class Constants {
 	
-	public static boolean AUTO_LOGIN_CHK = false;
+	public static boolean auto_LogIn_Chk = false;
+	public static int coutnt = 0;
 	
 	public static final String PROJECT_ID = "993491838738";
 	
@@ -11,9 +12,11 @@ public class Constants {
 	public static final String RECEIVE = "onReceiveData";
 	public static final String PAGE = "1";
 	
+	public static final String GCM_CHK = "0";
+	
 	//URL
 //	public static final String URL_SERVER = "http://192.168.0.19:8080/cpr/";
-	public static final String URL_SERVER = "http://14.63.226.20/cpr";
+	public static final String URL_SERVER = "http://14.63.226.20/cpr/";
 	public static final String URL_ADDREGID = "gcm/addRegId";
 	public static final String URL_LOGIN = "logIn/";
 	public static final String URL_WIDGET_LIST = "widget/list";
@@ -44,5 +47,4 @@ public class Constants {
 	//shop
 	public static final String SHOPPARAM[] = {"selIdx", "page"};
 	public static final String SHOPLISTVO[] = {"mobileImage", "productName", "productPrice"};
-	/*public static final String ACTION_EVENT = "org.shinyul.cpr_widget.widget.ACTION_EVENT";*/
 }
