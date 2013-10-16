@@ -10,7 +10,12 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.json.JSONArray;
 import org.json.JSONException;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class CommonUtils{
@@ -24,7 +29,7 @@ public class CommonUtils{
    */
   protected String post(String path, Map<String, String> paramMap, String cmd) {
 	   
-	  	String serverUrl = Constants.SERVERURL+ path;
+	  	String serverUrl = Constants.URL_SERVER+ path;
 	    Log.i(Constants.TAG , serverUrl);
 	    
 	    URL url = null;
@@ -38,12 +43,14 @@ public class CommonUtils{
 	    String params = makeParams(paramMap);
 	       
 	    HttpURLConnection conn = null;
-	   String reserveList = null;
+	    String rcvData = null;
 		try {
 			
 			//connection 얻기
 			conn = getConnection(url,"POST", params.getBytes().length);
-			
+			//test용
+			conn.setUseCaches(false);
+
 			//인자값(파라미터) 보내기
 			onWrite(conn, params.getBytes());
 			
@@ -53,8 +60,8 @@ public class CommonUtils{
 				throw new IOException("Post failed with error code " + states);
 			}else{
 				//성공시 값 받기
-				if(cmd.equals("onReceiveList")){
-					reserveList = onReceiveList(conn);
+				if(cmd.equals(Constants.RECEIVE)){
+					rcvData = onReceiveData(conn);
 				}
 			}
 		} catch (IOException e) {
@@ -65,7 +72,7 @@ public class CommonUtils{
 			if(conn != null) conn.disconnect();
 		}
 		
-		return reserveList;
+		return rcvData;
   }
   
 /**
@@ -117,7 +124,7 @@ public class CommonUtils{
   	 * @throws IOException 
   	 * @throws JSONException 
   	 */
-  	public String onReceiveList(HttpURLConnection conn) throws IOException, JSONException{
+  	protected String onReceiveData(HttpURLConnection conn) throws IOException, JSONException{
   	
   		Log.i(Constants.TAG, "states : 200");
 			
@@ -128,9 +135,49 @@ public class CommonUtils{
 		while((temp = reader.readLine()) != null){
 			sb.append(temp); 
 		}
-		String reserveList = sb.toString();
-//		Log.i(Constants.TAG, reserveList);
+		String receiveData = sb.toString();
 	
-		return reserveList;
+		return receiveData;
   	}
+  	
+  	/////////////////////////////////////////////////////////////////////
+ 	// JSONArray 객체로
+ 	protected JSONArray exchangeData(String rcvData) {
+ 		return new JSONArray(rcvData);
+ 	}
+ 	
+ 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	//sharedPreferences
+	// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 값 불러오기 -- memberIdx만 필요해서..리턴을 바꿈..
+	protected int getPreferences(Context context) {
+		
+		String logIn[] = Constants.LOGINDATA;
+		int i = 0;
+		
+		SharedPreferences pref = context.getSharedPreferences(logIn[i++], context.MODE_PRIVATE);
+		int chk = pref.getInt(logIn[i++], 0);
+		int selIdx = pref.getInt(logIn[i++], 0);
+		String memberId = pref.getString(logIn[i++], "");
+		String memberName = pref.getString(logIn[i++], "");
+		int memberIdx = pref.getInt(logIn[i++], 0);
+		int memberLev = pref.getInt(logIn[i++], 0);
+		
+		return memberIdx;
+	}
+
+	// 값(Key Data) 삭제하기
+	public void removePreferences(Context context) {
+		
+		String logIn[] = Constants.LOGINDATA;
+		
+		//0번째는 무조건 번들이름임..
+		SharedPreferences pref = context.getSharedPreferences(logIn[0], context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = pref.edit();
+		//따라서 1번부터 시작..
+		for(int i = 1; i < logIn.length; i++){
+			editor.remove(logIn[i]);
+		}
+		editor.commit();
+	}
 }

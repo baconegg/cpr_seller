@@ -2,7 +2,7 @@ package org.shinyul.widget;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.shinyul.cpr_widget.R;
+import org.shinyul.cpr_seller.R;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import android.appwidget.AppWidgetManager;
@@ -26,22 +26,6 @@ public class ListProvider implements RemoteViewsFactory {
 	private int appWidgetId;
 	private String reserveList;
 	
-	protected static String[] head={
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕",
-		 "제사 음식 - 5색 나물 + 국탕"		
-	};
-
-	protected static String[] content={
-		 "주문자 : uuid813",
-		 "주문자 : scott",
-		 "주문자 : akb",
-		 "주문자 : otaku48",
-		 "주문자 : teagu9"
-	};
-	
 	public ListProvider(Context context, Intent intent) {
 		this.context = context;
 //		appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -61,7 +45,7 @@ public class ListProvider implements RemoteViewsFactory {
 	private void populateListItem() {
 		
 		util = WidgetUtil.getWidgetUtil();
-		List<ReserveVO> list =  ((WidgetUtil) util).getList(reserveList); 
+		List<ReserveVO> list =  ((WidgetUtil) util).getReserveData(reserveList); 
 		
 		Log.i(Constants.TAG, "msg list : " +  list);
 		
@@ -69,9 +53,9 @@ public class ListProvider implements RemoteViewsFactory {
 			for (int i = 0; i < list.size() ; i++) {
 				ListItem listItem = new ListItem();
 				listItem.heading = list.get(i).getProductName();
-				listItem.content = list.get(i).getProductInfo();
+//				listItem.content = list.get(i).getProductInfo();
+				listItem.content = list.get(i).getReserveMemo();
 				listItemList.add(listItem);
-				
 			}
 		}else{
 			ListItem listItem = new ListItem();
