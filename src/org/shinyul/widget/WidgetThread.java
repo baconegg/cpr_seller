@@ -1,6 +1,6 @@
 package org.shinyul.widget;
 
-import org.shinyul.gcm.GCMUtil;
+import org.shinyul.cpr_seller.GCMUtil;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import org.shinyul.util.SendMessageHandler;

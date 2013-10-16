@@ -1,4 +1,4 @@
-package org.shinyul.login;
+package org.shinyul.cpr_seller;
 
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;

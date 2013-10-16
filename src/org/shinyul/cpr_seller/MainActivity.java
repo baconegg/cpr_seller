@@ -1,9 +1,8 @@
-package org.shinyul.login;
+package org.shinyul.cpr_seller;
 
 import java.util.Map;
 
 import org.shinyul.cpr_seller.R;
-import org.shinyul.gcm.GCMUtil;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import org.shinyul.util.SendMessageHandler;
@@ -49,15 +48,17 @@ public class MainActivity extends Activity {
 		
 		btnLogIN = (Button)findViewById(R.id.btnLogIn);
 		ID = (TextView)findViewById(R.id.memberId);
-		PW = (TextView)findViewById(R.id.memberPw);
+		PW = (TextView)findViewById(R.id.memberId2);
 		logInChk = (CheckBox)findViewById(R.id.autoLogIn);
+		
+		ID.requestFocus();
 		
 		//auto login check///////////////////////////////////////////
 		processThread(appContext);
-		
 	}
 
 	protected void onDestroy() {
+		
 		util = GCMUtil.getGCMUtil();
 		((GCMUtil) util).deleteRegId(this.appContext);
 		Log.i(Constants.TAG, "mainActivity Destroy");
@@ -141,15 +142,6 @@ public class MainActivity extends Activity {
 			// login성공
 			CommonUtils	utils = GCMUtil.getGCMUtil();
 			((GCMUtil)utils).startGCM(context);
-			
-			///////////////////////////////////////////////////////////
-			//auto login 체크안 되 있을 땐 preferences 지움.. 
-			if(Constants.auto_LogIn_Chk == false){
-				util = LogInUtil.getLogInUtil();
-				((LogInUtil)util).removePreferences(context);
-				Log.i(Constants.TAG, "remove preferences");
-			}
-			///////////////////////////////////////////////////////////
 			
 			Bundle extras = ((LogInUtil)util).saveBundle(logInData);
 			extras.putString("memberPw", memberPw);

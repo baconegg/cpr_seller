@@ -1,6 +1,7 @@
-package org.shinyul.gcm;
+package org.shinyul.cpr_seller;
 
 import org.shinyul.cpr_seller.R;
+import org.shinyul.cpr_seller.R.drawable;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 import org.shinyul.util.SendMessageHandler;
@@ -86,16 +87,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	/**단말에서 GCM 서비스 등록 했을 때 등록 id를 받는다*/
-	@Override
 	protected void onRegistered(Context context, String regId) {
-		Toast.makeText(context, "onRegistered regId : " + regId, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(context, "onRegistered regId : " + regId, Toast.LENGTH_SHORT).show();
 		util = GCMUtil.getGCMUtil();
 		((GCMUtil)util).regId(getApplicationContext(), regId, Constants.URL_ADDREGID);
 		Toast.makeText(context, "GCM ID를  등록하였습니다. : " + regId, Toast.LENGTH_LONG).show();
+		
+		
+		///////////////////////////////////////////////////////////
+		//auto login 체크안 되 있을 땐 preferences 지움.. 
+		if(Constants.auto_LogIn_Chk == false){ 
+			util = LogInUtil.getLogInUtil();
+			((LogInUtil)util).removePreferences(context);
+			Log.i(Constants.TAG, "remove preferences");
+		}
+		///////////////////////////////////////////////////////////
+		
 	}
 
 	/**단말에서 GCM 서비스 등록 해지를 하면 해지된 등록 id를 받는다*/
-	@Override
 	protected void onUnregistered(Context context, String regId) {
 		
 		Log.i("GCMIntentService", "Device unregistered");

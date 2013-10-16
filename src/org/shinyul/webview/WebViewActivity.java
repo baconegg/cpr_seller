@@ -1,7 +1,7 @@
 package org.shinyul.webview;
 
+import org.shinyul.cpr_seller.LogInUtil;
 import org.shinyul.cpr_seller.R;
-import org.shinyul.login.LogInUtil;
 import org.shinyul.util.CommonUtils;
 import org.shinyul.util.Constants;
 
@@ -9,12 +9,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -26,10 +31,28 @@ public class WebViewActivity extends Activity {
 	private String logInData;
 	private WebView mWebView;
 		
+	private Handler mHandler;
+	private boolean mFlag = false;
+	
+	private static final int FILECHOOSER_RESULTCODE = 1;
+	private ValueCallback<Uri> mUploadMessage = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_webview);
+		
+		//종료 handler//
+		mHandler = new Handler(){
+			@Override
+			public void handleMessage(Message msg){
+				if(msg.what == 0){
+					mFlag = false;
+				}
+			}
+		};		
+		//////////////////////
+		
 		initialize();
 	}
 
@@ -52,10 +75,27 @@ public class WebViewActivity extends Activity {
 		setLayout();
 		 // 웹뷰에서 자바스크립트실행가능
         mWebView.getSettings().setJavaScriptEnabled(true); 
-       
+        mWebView.getSettings().setPluginState(PluginState. ON);
         // WebViewClient 지정
+        mWebView.setWebChromeClient(new WebChromeClient(){
+            // For Android < 3.0
+		    public void openFileChooser( ValueCallback<Uri> uploadMsg ){
+		        openFileChooser( uploadMsg, "" );
+		    }
+		    // For Android 3.0+
+		    public void openFileChooser( ValueCallback<Uri> uploadMsg, String acceptType ){  
+		        mUploadMessage = uploadMsg;  
+		        Intent i = new Intent(Intent.ACTION_GET_CONTENT);  
+		        i.addCategory(Intent.CATEGORY_OPENABLE);  
+		        i.setType("image/*");  
+		        startActivityForResult( Intent.createChooser( i, "File Chooser" ), WebViewActivity.FILECHOOSER_RESULTCODE );  
+		    }
+		    // For Android 4.1+
+		    public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+		        openFileChooser( uploadMsg, "" );
+		    }
+        });
         mWebView.setWebViewClient(new WebViewClientClass());
-//        mWebView.setWebChromeClient(new WebChromeClient());
         
         // 홈페이지 지정
         mWebView.loadUrl(Constants.URL_SERVER + Constants.URL_WEBVIEW + memberId + "/" + memberPw + "/" + Integer.valueOf(selIdx).intValue());
@@ -103,7 +143,6 @@ public class WebViewActivity extends Activity {
 		case 2:
 			mWebView.reload();
 			break;
-			
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -123,14 +162,42 @@ public class WebViewActivity extends Activity {
 	// ///////////////////////////////////////////////////////////////////
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		//백 키 터치시 && 이전페이지 볼수 있을 때
-		if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
-			mWebView.goBack();
-			return true;
+//		//백 키 터치시 && 이전페이지 볼수 있을 때
+//		if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+//			mWebView.goBack();
+//			return true;
+//		}
+		
+		//백키 이벤트를 가로채서 플래그값 확인 후 처리..
+		//플래그 값이 true인 상태에서 2초 이내에 백키를 누르면 액티비티 종료.
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+		
+			if(!mFlag){
+				Toast.makeText(appContext, "뒤로 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_LONG).show();
+				mFlag = true;
+				mHandler.sendEmptyMessageDelayed(0, 2000);
+				return false;
+			}else{
+				moveTaskToBack(true);
+				finish();
+			}
 		}
+				
 		return super.onKeyDown(keyCode, event);
 	}
 
+	//선택 된 파일에 대한 데이터 받기
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+//		Toast.makeText(appContext,"[" + requestCode + "]", Toast.LENGTH_LONG).show();
+		if (requestCode == FILECHOOSER_RESULTCODE && mUploadMessage != null) {
+			Uri result = data == null || resultCode != RESULT_OK ? null : data.getData();
+			mUploadMessage.onReceiveValue(result);
+			mUploadMessage = null;
+		}
+	}
+	
 	/////////////////////////////////////////////////////////////////////
     private class WebViewClientClass extends WebViewClient { 
         @Override

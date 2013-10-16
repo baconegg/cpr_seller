@@ -1,4 +1,4 @@
-package org.shinyul.gcm;
+package org.shinyul.cpr_seller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,6 @@ public class GCMUtil extends CommonUtils {
 	public static GCMUtil getGCMUtil() {
 		return util;
 	}
-
 	// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// gcm part
 	/**
@@ -30,7 +29,7 @@ public class GCMUtil extends CommonUtils {
 	 * @param context
 	 */
 	public void startGCM(Context context) {
-
+	
 		/**
 		 * GCM Service가 이용 가능한 Device인지 체크한다. api 8(Android 2.2) 미만인 경우나
 		 * GCMService를 이용할 수 없는 디바이스의 경우 오류를 발생시키니 반드시 예외처리하도록 한다.
@@ -49,7 +48,7 @@ public class GCMUtil extends CommonUtils {
 		 * 리턴
 		 */
 		String regId = GCMRegistrar.getRegistrationId(context);
-		Toast.makeText(context, "regId check : " + regId, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(context, "regId check : " + regId, Toast.LENGTH_SHORT).show();
 		/**
 		 * Registration Id가 없는 경우(어플리케이션 최초 설치로 발급받은 적이 없거나, 삭제 후 재설치 등
 		 * SharedPreference에 저장된 Registration Id가 없는 경우가 이에 해당한다.)
@@ -61,10 +60,10 @@ public class GCMUtil extends CommonUtils {
 			 * GCMIntentService.class의 onRegistered를 콜백한다.
 			 */
 			GCMRegistrar.register(context, Constants.PROJECT_ID);
-			Toast.makeText(context, "regId 받음 : " + regId, Toast.LENGTH_SHORT).show();
+			
 		} else {
 			Log.i(Constants.TAG, "Exist Registration Id: " + regId);
-			Toast.makeText(context, "GCM ID가 등록되어있습니다.", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(context, "GCM ID가 등록되어있습니다.", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -95,10 +94,6 @@ public class GCMUtil extends CommonUtils {
 		GCMRegistrar.onDestroy(context);
 	}
 
-	public String getPhoneNumber(Context paramContext) {
-
-		return ((TelephonyManager) paramContext.getSystemService("phone")).getLine1Number();
-	}
 
 	public boolean isEmpty(String value) {
 
@@ -110,6 +105,11 @@ public class GCMUtil extends CommonUtils {
 		return isEmpty;
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////////
+	public String getPhoneNumber(Context paramContext) {
+		
+		return ((TelephonyManager) paramContext.getSystemService("phone")).getLine1Number();
+	}
 	// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 실제로 GCMIntentService에서 호출하는 부분...
 
@@ -129,6 +129,7 @@ public class GCMUtil extends CommonUtils {
 		
 		paramMap.put(regIds[i++], regId);
 		paramMap.put(regIds[i++], String.valueOf(getPreferences(context)));
+//		paramMap.put(regIds[i], preData.get(i++));
 		paramMap.put(regIds[i++], phoneNumber);
 
 		Toast.makeText(context, "regId 호출..", Toast.LENGTH_LONG).show();
