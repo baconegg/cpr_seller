@@ -15,8 +15,8 @@ public class Constants {
 	public static final String GCM_CHK = "0";
 	
 	//URL
-//	public static final String URL_SERVER = "http://192.168.0.19:8080/cpr/";
-	public static final String URL_SERVER = "http://14.63.226.20/cpr/";
+	public static final String URL_SERVER = "http://localhost:8080/cpr/";
+//	public static final String URL_SERVER = "http://14.63.226.20/cpr/";
 	public static final String URL_ADDREGID = "gcm/addRegId";
 	public static final String URL_LOGIN = "logIn/";
 	public static final String URL_WIDGET_LIST = "widget/list";
@@ -33,7 +33,7 @@ public class Constants {
 	//상수설정
 	//gcm
 	public static final String REGID[] = {"regId","memberIdx","phoneNumber"};
-	public static final String GCMMMS[] = {"protocol","content","memberName","productName","reserveQty","reserveReceiveTime","reserveMemo","totalPrice","productInfo"};
+	public static final String GCMMMS[] = {"protocol","content","memberName","productName","reserveQty","reserveReceiveTime","reserveMemo","totalPrice","productInfo","selIdx"};
 	//widget
 	public static final String WIDGETPARAM[] = {"page","selIdx"};
 	public static final String RESERVEVO[] = {"reserveIdx","productName","productInfo","reserveTime","productIdx","productPrice","reserveQty","reserveReceiveTime","reserveMemo",

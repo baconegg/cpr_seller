@@ -45,6 +45,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String reserveMemo = paramIntent.getExtras().getString(gcmMms[i++]);
 		String totalPrice = paramIntent.getExtras().getString(gcmMms[i++]);
 		String productInfo = paramIntent.getExtras().getString(gcmMms[i++]);
+		String selIdx = paramIntent.getExtras().getString(gcmMms[i++]);
 		String title = memberName + " 님이 " + productName + "을 " + reserveQty + "개 주문하였습니다.";
 		String text = "요청사항 : " + reserveMemo;
 		
@@ -82,7 +83,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		noticeManager.notify(0, notice);
 		
-		processThread(context);
+		processThread(context, Integer.parseInt(selIdx));
 		
 	}
 
@@ -122,8 +123,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 	
 	// //////////////////////////////////////////////////////////////////////////
 	// 쓰레드 작업으로 위젯에 데이터를 보내는 작업을 하는 함수
-	public void processThread(Context context) {
-		WidgetThread thread = new WidgetThread(context, new SendMessageHandler(), 1, 3);
+	public void processThread(Context context, int selIdx) {
+		
+//		WidgetThread thread = new WidgetThread(context, new SendMessageHandler(), 1, selIdx);
+		WidgetThread thread = new WidgetThread(context, SendMessageHandler.getSendMessageHandler(), 1, selIdx);
 		thread.setDaemon(true);
 		thread.start();
 	}

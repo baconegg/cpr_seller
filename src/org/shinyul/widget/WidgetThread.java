@@ -54,11 +54,11 @@ public class WidgetThread extends Thread implements Runnable {
 		handler.sendMessage(msg);
 		
 		// 1초 딜레이
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 
 //		 msg = handler.obtainMessage();
 //		 msg.what = Constants.SEND_THREAD_STOP_MESSAGE;

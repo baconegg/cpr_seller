@@ -3,6 +3,7 @@ package org.shinyul.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.shinyul.cpr_seller.GCMUtil;
 import org.shinyul.cpr_seller.MainActivity;
 import org.shinyul.shop.ShopActivity;
 import org.shinyul.widget.WidgetProvider;
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SendMessageHandler extends Handler {
 
@@ -20,6 +22,13 @@ public class SendMessageHandler extends Handler {
 	private String rcvData;
 	private Map<String, String> preData;
 	private CommonUtils util;
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private static SendMessageHandler handler = new SendMessageHandler();
+
+	public static SendMessageHandler getSendMessageHandler() {
+		return handler;
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public Context getContext() {
 		return context;
@@ -43,6 +52,8 @@ public class SendMessageHandler extends Handler {
 			
 			rcvData = msg.obj.toString();
 
+//			Toast.makeText(context,  "widget : " + rcvData, Toast.LENGTH_LONG).show();
+			
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
 			WidgetProvider provider = new WidgetProvider();
 			provider.updateData(rcvData);

@@ -84,7 +84,8 @@ public class MainActivity extends Activity {
 				}
 				///////////////////////////////////
 				
-				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
+//				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
+				LogInThread thread = new LogInThread(appContext, SendMessageHandler.getSendMessageHandler(), memberId, memberPw);
 				thread.setDaemon(true);
 				thread.start();
 			}
@@ -125,7 +126,8 @@ public class MainActivity extends Activity {
 	// //////////////////////////////////////////////////////////////////////////
 	// 쓰레드 작업
 	public void processThread(Context context) {
-		AutoLogInThread thread = new AutoLogInThread(context, new SendMessageHandler());
+//		AutoLogInThread thread = new AutoLogInThread(context, new SendMessageHandler());
+		AutoLogInThread thread = new AutoLogInThread(context, SendMessageHandler.getSendMessageHandler());
 		thread.setDaemon(true);
 		thread.start();
 	}

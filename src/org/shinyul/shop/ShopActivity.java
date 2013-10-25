@@ -60,7 +60,8 @@ public class ShopActivity extends Activity {
 	////////////////////////////////////////////////////////////////////////////////
 	// 쓰레드 작업
 	public void processThread(Context context, String selIdx) {
-		ShopThread thread = new ShopThread(context, new SendMessageHandler(), selIdx);
+//		ShopThread thread = new ShopThread(context, new SendMessageHandler(), selIdx);
+		ShopThread thread = new ShopThread(context, SendMessageHandler.getSendMessageHandler(), selIdx);
 		thread.setDaemon(true);
 		thread.start();
 	}
