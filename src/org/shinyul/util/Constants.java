@@ -15,8 +15,8 @@ public class Constants {
 	public static final String GCM_CHK = "0";
 	
 	//URL
-	public static final String URL_SERVER = "http://localhost:8080/cpr/";
-//	public static final String URL_SERVER = "http://14.63.226.20/cpr/";
+//	public static final String URL_SERVER = "http://localhost:8080/cpr/";
+	public static final String URL_SERVER = "http://14.63.226.20/cpr/";
 	public static final String URL_ADDREGID = "gcm/addRegId";
 	public static final String URL_LOGIN = "logIn/";
 	public static final String URL_WIDGET_LIST = "widget/list";
