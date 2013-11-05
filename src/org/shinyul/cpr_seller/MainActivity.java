@@ -84,8 +84,8 @@ public class MainActivity extends Activity {
 				}
 				///////////////////////////////////
 				
-				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
-//				LogInThread thread = new LogInThread(appContext, SendMessageHandler.getSendMessageHandler(), memberId, memberPw);
+//				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
+				LogInThread thread = new LogInThread(appContext, SendMessageHandler.getSendMessageHandler(), memberId, memberPw);
 				thread.setDaemon(true);
 				thread.start();
 			}
