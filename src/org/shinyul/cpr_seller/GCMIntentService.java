@@ -101,7 +101,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			util = LogInUtil.getLogInUtil();
 			((LogInUtil)util).removePreferences(context);
 			Log.i(Constants.TAG, "remove preferences");
-		}
+		} 
 		///////////////////////////////////////////////////////////
 		
 	}
