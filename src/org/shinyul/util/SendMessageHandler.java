@@ -51,7 +51,6 @@ public class SendMessageHandler extends Handler {
 			Log.i(Constants.TAG, "SEND_THREAD_INFOMATION_WIDGET 오니?");
 			
 			rcvData = msg.obj.toString();
-
 //			Toast.makeText(context,  "widget : " + rcvData, Toast.LENGTH_LONG).show();
 			
 			AppWidgetManager manager = AppWidgetManager.getInstance(context);
@@ -63,10 +62,10 @@ public class SendMessageHandler extends Handler {
 		case Constants.SEND_THREAD_INFOMATION_LOGIN:
 			Log.i(Constants.TAG, "SEND_THREAD_INFOMATION_LOGIN 오니?");
 			
-			rcvData = msg.obj.toString();
-			
-			((MainActivity)context).updateData(rcvData);
-			((MainActivity)context).toGCM(context);
+				rcvData = msg.obj.toString();
+				Log.i(Constants.TAG, "rcvData in handler : " + rcvData);
+				((MainActivity)context).setRcvData(rcvData);
+				((MainActivity)context).toGCM(context);
 			break;
 
 		case Constants.SEND_THREAD_INFOMATION_SHOP:
@@ -81,10 +80,11 @@ public class SendMessageHandler extends Handler {
 		case Constants.SEND_THREAD_INFOMATION_AUTO_LOGIN:
 			Log.i(Constants.TAG, "SEND_THREAD_INFOMATION_AUTO_LOGIN 오니?");
 			
-			preData = (HashMap<String, String>)msg.obj;
-			((MainActivity)context).updatePreData(preData);
-			((MainActivity)context).logIn();
+				preData = (HashMap<String, String>)msg.obj;
+				Log.i(Constants.TAG, "preData in handler : " + preData);
+				((MainActivity)context).setPreRcvData(preData);
 			
+				((MainActivity)context).logIn();
 			break;
 			
 		default:

@@ -27,6 +27,14 @@ public class AutoLogInThread extends Thread implements Runnable {
 				
 		handler.setContext(context);
 	}
+
+	public AutoLogInThread(Context context) {
+		super();
+		this.context = context;
+		
+		handler = new SendMessageHandler();
+		handler.setContext(context);
+	}
 	// //////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -57,6 +65,7 @@ public class AutoLogInThread extends Thread implements Runnable {
 		}
 		
 		msg.obj = preData;
+		
 		handler.sendMessage(msg);
 		
 		// 1초 딜레이

@@ -127,6 +127,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 //		WidgetThread thread = new WidgetThread(context, new SendMessageHandler(), 1, selIdx);
 		WidgetThread thread = new WidgetThread(context, SendMessageHandler.getSendMessageHandler(), 1, selIdx);
+//		WidgetThread thread = new WidgetThread(context, 1, selIdx);
 //		thread.setDaemon(true);
 		thread.start();
 	}

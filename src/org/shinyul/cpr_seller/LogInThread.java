@@ -28,6 +28,18 @@ public class LogInThread extends Thread implements Runnable {
 		
 		handler.setContext(context);
 	}
+	
+	public LogInThread(Context context, String memberId, String memberPw) {
+		super();
+		this.context = context;
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+		
+		handler = new SendMessageHandler();
+		handler.setContext(context);
+		
+	}
+	
 	// //////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -54,6 +66,7 @@ public class LogInThread extends Thread implements Runnable {
 		String LogInData = ((LogInUtil)util).logInChk(context, Constants.URL_LOGIN, memberId, memberPw);
 		
 		msg.obj = LogInData;
+		
 		handler.sendMessage(msg);
 		
 		// 1초 딜레이

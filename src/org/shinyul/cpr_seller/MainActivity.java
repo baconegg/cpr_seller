@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 
 	private Context appContext;
 	private CommonUtils util;
-	private String logInData;
+	private String rcvData;
 	private String memberId;
 	private String memberPw;
 	private TextView ID;
@@ -85,7 +85,8 @@ public class MainActivity extends Activity {
 				///////////////////////////////////
 				
 //				LogInThread thread = new LogInThread(appContext, new SendMessageHandler(), memberId, memberPw);
-				LogInThread thread = new LogInThread(appContext, SendMessageHandler.getSendMessageHandler(), memberId, memberPw);
+//				LogInThread thread = new LogInThread(appContext, SendMessageHandler.getSendMessageHandler(), memberId, memberPw);
+				LogInThread thread = new LogInThread(appContext, memberId, memberPw);
 				thread.setDaemon(true);
 				thread.start();
 			}
@@ -114,13 +115,17 @@ public class MainActivity extends Activity {
 	
 	/////////////////////////////////////////////////////////////////////////
 	//pre파일 업데이트..
-	public void updatePreData(Map<String, String> preData){
+	public void setPreRcvData(Map<String, String> preData){
 		this.preData = preData;
+		
+		Log.i("","pre recieve Data " + this.preData);
 	}
 	
 	//데이터 업데이트
-	public void updateData(String rcvData){
-		this.logInData = rcvData;
+	public void setRcvData(String rcvData){
+		this.rcvData = rcvData;
+		
+		Log.i("","recieve Data " + this.rcvData);
 	}
 	
 	// //////////////////////////////////////////////////////////////////////////
@@ -128,6 +133,7 @@ public class MainActivity extends Activity {
 	public void processThread(Context context) {
 //		AutoLogInThread thread = new AutoLogInThread(context, new SendMessageHandler());
 		AutoLogInThread thread = new AutoLogInThread(context, SendMessageHandler.getSendMessageHandler());
+//		AutoLogInThread thread = new AutoLogInThread(context);
 		thread.setDaemon(true);
 		thread.start();
 	}
@@ -137,7 +143,7 @@ public class MainActivity extends Activity {
 	public void toGCM(Context context) {
 
 		util = LogInUtil.getLogInUtil();
-		Map<String, String> data = ((LogInUtil) util).savePreferences(context, logInData, memberPw);
+		Map<String, String> data = ((LogInUtil) util).savePreferences(context, rcvData, memberPw);
 		
 		//////////////////
 		if(Constants.GCM_CHK.equals(data.get("chk"))){
@@ -145,7 +151,7 @@ public class MainActivity extends Activity {
 			CommonUtils	utils = GCMUtil.getGCMUtil();
 			((GCMUtil)utils).startGCM(context);
 			
-			Bundle extras = ((LogInUtil)util).saveBundle(logInData);
+			Bundle extras = ((LogInUtil)util).saveBundle(rcvData);
 			extras.putString("memberPw", memberPw);
 //			Intent intent = new Intent(appContext, MenuActivity.class);
 			Intent intent = new Intent(appContext, WebViewActivity.class);

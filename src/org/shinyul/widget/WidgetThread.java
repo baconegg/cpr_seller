@@ -26,6 +26,17 @@ public class WidgetThread extends Thread implements Runnable {
 		
 		handler.setContext(context);
 	}
+	
+	public WidgetThread(Context context, int page, int selIdx) {
+		super();
+		this.context = context;
+		this.page = page;
+		this.selIdx = selIdx;
+		
+		handler = new SendMessageHandler();
+		handler.setContext(context);
+		
+	}
 	// //////////////////////////////////////////////////////////////////////////
 
 	@Override
@@ -51,6 +62,7 @@ public class WidgetThread extends Thread implements Runnable {
 		String reserveList = ((WidgetUtil)util).receiveList(context, page, selIdx, Constants.URL_WIDGET_LIST);
 		
 		msg.obj = reserveList;
+		
 		handler.sendMessage(msg);
 		
 		// 1초 딜레이
